@@ -33,7 +33,7 @@
     rawThemes: RawTheme[],
     catPool: RawCatQuestion[]
   ): Theme[] {
-    // 1. Базовый парсинг всех обычных вопросов
+    // парсинг всех вопр
     const themes: Theme[] = rawThemes.map((rt) => ({
       id: crypto.randomUUID(),
       name: rt.theme,
@@ -47,31 +47,27 @@
       })),
     }));
 
-    // 2. Собираем все вопросы раунда в плоский массив для удобного выбора (30 вопросов)
+    // собираем все вопросы
     const allQuestions: Question[] = themes.flatMap((t) => t.questions);
 
-    // 3. Выбираем 4 уникальных случайных индекса ячеек
+    // выбираем случайно индексы и делаем аукционы и котов
     const specialIndices = new Set<number>();
     while (specialIndices.size < 4) {
       specialIndices.add(Math.floor(Math.random() * allQuestions.length));
     }
     const indices = Array.from(specialIndices);
 
-    // 4. Назначаем 2 "Аукциона"
     allQuestions[indices[0]].type = "auction";
     allQuestions[indices[1]].type = "auction";
 
-    // 5. Назначаем 2 "Кота в мешке" (рандомно забирая их из пула)
     for (let i = 2; i < 4; i++) {
       const q = allQuestions[indices[i]];
       q.type = "cat";
 
       if (catPool.length > 0) {
-        // Случайный индекс из оставшихся котов
         const randomCatIdx = Math.floor(Math.random() * catPool.length);
-        // Вырезаем кота из пула, чтобы он больше не выпал
         const catData = catPool.splice(randomCatIdx, 1)[0];
-
+        // кот вырезан и не повторится
         q.secretTheme = catData.theme;
         q.text = catData.text;
         q.answer = catData.answer;

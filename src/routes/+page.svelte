@@ -1,23 +1,60 @@
 <script lang="ts">
-  import data from "$lib/data/data.json";
+  import { goto } from "$app/navigation";
+  import { game, resetGame, loadGame } from "$lib/state/gameStore.svelte";
+  import { onMount } from "svelte";
 
-  const { round1 } = data;
+  onMount(() => {
+    loadGame();
+  });
+
+  // Игра считается активной, если мы ушли с этапа настройки
+  let hasActiveGame = $derived(game.phase !== "setup");
+
+  function startNewGame() {
+    resetGame(); // Очищаем старый стейт
+    goto("/setup");
+  }
+
+  function continueGame() {
+    if (game.phase === "results") {
+      goto("/results");
+    } else if (game.phase === "final") {
+      goto("/final");
+    } else {
+      goto("/game");
+    }
+  }
 </script>
 
-<div class="grid grid-cols-6 gap-4 p-4">
-  {#each round1 as theme}
-    <div class="flex flex-col gap-2">
-      <div
-        class="bg-primary text-primary-content p-2 rounded-box font-bold text-center h-20 flex items-center justify-center"
-      >
-        {theme.theme}
-      </div>
+<div class="hero min-h-screen">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-6xl font-extrabold text-primary mb-6 drop-shadow-md">
+        Твоя Игра
+      </h1>
 
-      {#each theme.questions as question}
-        <button class="btn btn-secondary h-16 text-xl">
-          {question.cost}
+      <p class="py-6 text-lg text-base-content/80">
+        Интеллектуальная браузерная викторина для троих игроков. Проверьте свои
+        знания и скорость реакции!
+      </p>
+
+      <div class="flex flex-col gap-4 mt-2">
+        <button
+          class="btn btn-primary btn-lg w-full text-xl"
+          onclick={startNewGame}
+        >
+          Новая игра
         </button>
-      {/each}
+
+        {#if hasActiveGame}
+          <button
+            class="btn btn-secondary btn-lg w-full text-xl"
+            onclick={continueGame}
+          >
+            Продолжить игру
+          </button>
+        {/if}
+      </div>
     </div>
-  {/each}
+  </div>
 </div>

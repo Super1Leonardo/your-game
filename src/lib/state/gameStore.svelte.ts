@@ -38,13 +38,14 @@ export function loadGame() {
 }
 
 // Автоматическое сохранение состояния при любом изменении
-if (typeof window !== "undefined") {
-  $effect.root(() => {
-    $effect(() => {
-      // Svelte 5 отследит обращения к game и перезапустит эффект при мутациях
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(game));
+export function initStorePersistence() {
+  if (typeof window !== "undefined") {
+    $effect.root(() => {
+      $effect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(game));
+      });
     });
-  });
+  }
 }
 
 export function resetGame() {
