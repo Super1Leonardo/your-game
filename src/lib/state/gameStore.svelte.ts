@@ -11,6 +11,11 @@ const defaultState: GameState = {
   currentPlayerId: null,
   activeQuestion: null,
   answeringPlayerId: null,
+  attemptedPlayerIds: [],
+  timerEndsAt: null,
+  auctionState: null,
+  finalState: null,
+
   devMode: false,
 };
 
@@ -30,6 +35,16 @@ export function loadGame() {
       }
     }
   }
+}
+
+// Автоматическое сохранение состояния при любом изменении
+if (typeof window !== "undefined") {
+  $effect.root(() => {
+    $effect(() => {
+      // Svelte 5 отследит обращения к game и перезапустит эффект при мутациях
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(game));
+    });
+  });
 }
 
 export function resetGame() {

@@ -4,7 +4,7 @@ export type QuestionType = "normal" | "cat" | "auction" | "final";
 export interface Player {
   id: string;
   name: string;
-  key: string; // клавиша которая используется для ответа
+  key: string; // клавиша ответа
   score: number;
 }
 
@@ -15,13 +15,25 @@ export interface Question {
   answer: string;
   price: number;
   isPlayed: boolean; // сыгран ли вопрос
-  secretTheme?: string; // кот в мешке
+  secretTheme?: string; // для кота в мешке и финала
 }
 
 export interface Theme {
   id: string;
   name: string;
-  questions: Question[]; // пот з ровно 5
+  questions: Question[]; // ровно 5
+}
+
+export interface AuctionState {
+  currentBet: number;
+  highestBidderId: string | null; // кто поставил больше всех
+  foldedPlayerIds: string[]; // кто пасанул
+}
+
+export interface FinalRoundState {
+  bets: Record<string, number>; // playerId -> ставка
+  answers: Record<string, string>; // playerId -> ответ
+  completedPlayerIds: string[]; // кто уже ответил
 }
 
 export interface GameState {
@@ -33,10 +45,18 @@ export interface GameState {
   round2Themes: Theme[];
   finalQuestion: Question | null;
 
-  //  контекст
+  // контекст
   currentPlayerId: string | null; // кто выбирает вопрос
   activeQuestion: Question | null; // вопрос на экране
   answeringPlayerId: string | null; // кто отвечает
+
+  // ход вопроса
+  attemptedPlayerIds: string[]; // кто уже ошибся
+  timerEndsAt: number | null; // для восстановления таймера
+
+  // спец состояния
+  auctionState: AuctionState | null;
+  finalState: FinalRoundState | null;
 
   devMode: boolean;
 }

@@ -14,7 +14,7 @@
     // люборе изменение game
     const serializedState = JSON.stringify(game); // читает все поля для подписки на глубокие изменения
     if (typeof window !== "undefined") {
-      localStorage.setItem("tvoya-igra-state", serializedState);
+      localStorage.setItem("igra-state", serializedState);
     }
   });
 </script>
