@@ -87,7 +87,7 @@
         return;
       }
       if (trimmedName.length > 15) {
-        errorMessage = `Имя "${trimmedName}" слишком длинное (максимум 15 символов)!`;
+        errorMessage = "Имя слишком длинное (максимум 15 символов)!";
         return;
       }
     }
@@ -125,9 +125,7 @@
 <div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
   <div class="card w-full max-w-lg bg-base-100 shadow-xl">
     <div class="card-body">
-      <h2
-        class="card-title text-3xl font-bold justify-center mb-6 text-primary"
-      >
+      <h2 class="card-title text-3xl font-bold justify-center mb-6">
         Подготовка игры
       </h2>
 
@@ -146,6 +144,7 @@
               </span>
             </label>
             <input
+              data-test-id="input-{index + 1}"
               id="player-{index}"
               type="text"
               placeholder="Введите имя..."
@@ -158,13 +157,17 @@
       </div>
 
       {#if errorMessage}
-        <div class="alert alert-error mt-4 shadow-sm">
+        <div
+          data-test-id="setup-alert"
+          class="alert alert-error mt-4 shadow-sm"
+        >
           <span>{errorMessage}</span>
         </div>
       {/if}
 
       <div class="card-actions justify-center mt-6">
         <button
+          data-test-id="setup-continue-button"
           class="btn btn-primary w-full text-lg"
           onclick={handleStartGame}
         >
