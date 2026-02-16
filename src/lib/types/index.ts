@@ -14,7 +14,7 @@ export interface Question {
   text: string;
   answer: string;
   price: number;
-  isPlayed: boolean; // сыгран ли вопрос
+  isPlayed: boolean;
   secretTheme?: string; // для кота в мешке и финала
 }
 

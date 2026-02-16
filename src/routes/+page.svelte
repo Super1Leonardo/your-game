@@ -29,9 +29,7 @@
 <div class="hero min-h-screen">
   <div class="hero-content text-center">
     <div class="max-w-md">
-      <h1 class="text-6xl font-extrabold text-primary mb-6 drop-shadow-md">
-        Твоя Игра
-      </h1>
+      <h1 class="text-6xl font-extrabold mb-6 drop-shadow-md">Твоя Игра</h1>
 
       <p class="py-6 text-lg text-base-content/80">
         Интеллектуальная браузерная викторина для троих игроков. Проверьте свои
