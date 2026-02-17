@@ -24,14 +24,14 @@
         </div>
 
         {#if game.devMode}
-          <div class="flex gap-2 mt-4">
+          <div class="flex mt-4">
             <button
-              class="btn btn-sm btn-error"
-              onclick={() => (player.score -= 100)}>-100</button
+              class="btn btn-sm btn-error text-sm rounded-r-none"
+              onclick={() => (player.score -= 100)}>Убрать 100</button
             >
             <button
-              class="btn btn-sm btn-success"
-              onclick={() => (player.score += 100)}>+100</button
+              class="btn flex btn-sm btn-success text-sm rounded-l-none"
+              onclick={() => (player.score += 100)}>Добавить 100</button
             >
           </div>
         {/if}
