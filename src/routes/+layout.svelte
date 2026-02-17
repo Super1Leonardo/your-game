@@ -9,6 +9,7 @@
     initStorePersistence,
   } from "$lib/state/gameStore.svelte";
   import { onMount } from "svelte";
+  import Toaster from "$lib/components/ui/Toaster.svelte";
 
   let { children } = $props();
   let isInitialized = $state(false);
@@ -41,6 +42,7 @@
 {#if isInitialized}
   <main class="min-h-screen bg-base-300 text-base-content">
     {@render children()}
+    <Toaster />
   </main>
 {:else}
   <div class="flex h-screen w-full items-center justify-center bg-base-100">

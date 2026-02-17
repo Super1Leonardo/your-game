@@ -20,7 +20,7 @@ const defaultState: GameState = {
 };
 
 export const game = $state<GameState>(
-  JSON.parse(JSON.stringify(defaultState)) // чтобы не мутировать оригинал
+  JSON.parse(JSON.stringify(defaultState)) // чтобы не мутировать оригинал defaultState
 );
 
 export function loadGame() {

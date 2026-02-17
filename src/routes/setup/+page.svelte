@@ -2,6 +2,7 @@
   import { goto } from "$app/navigation";
   import { game } from "$lib/state/gameStore.svelte";
   import gameData from "$lib/data/data.json";
+  import { addToast } from "$lib/components/ui/Toaster.svelte";
   import type { Theme, Question } from "$lib/types";
 
   // локальные интерфейсы
@@ -47,9 +48,7 @@
       })),
     }));
 
-    // собираем все вопросы
-    const allQuestions: Question[] = themes.flatMap((t) => t.questions);
-
+    const allQuestions: Question[] = themes.flatMap((t) => t.questions); // собираем все вопросы
     // выбираем случайно индексы и делаем аукционы и котов
     const specialIndices = new Set<number>();
     while (specialIndices.size < 4) {
@@ -83,11 +82,21 @@
     for (const p of playersInput) {
       const trimmedName = p.name.trim();
       if (!trimmedName) {
-        errorMessage = "Все имена должны быть заполнены!";
+        addToast({
+          data: {
+            title: "Все имена должны быть заполнены!",
+            type: "error",
+          },
+        });
         return;
       }
       if (trimmedName.length > 15) {
-        errorMessage = "Имя слишком длинное (максимум 15 символов)!";
+        addToast({
+          data: {
+            title: "Имя слишком длинное (максимум 15 символов)!",
+            type: "error",
+          },
+        });
         return;
       }
     }

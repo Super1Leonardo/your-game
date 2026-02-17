@@ -7,11 +7,10 @@
     loadGame();
   });
 
-  // Игра считается активной, если мы ушли с этапа настройки
-  let hasActiveGame = $derived(game.phase !== "setup");
+  let hasActiveGame = $derived(game.phase !== "setup"); // игра считается активной если мы ушли с этапа настройки
 
   function startNewGame() {
-    resetGame(); // Очищаем старый стейт
+    resetGame();
     goto("/setup");
   }
 
