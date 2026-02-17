@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createSwitch, melt } from "@melt-ui/svelte";
 
-  let { checked, onChange, label = "", textclass = "" } = $props();
+  let { checked, onChange, label = "", textclass = "", testid = "" } = $props();
 
   const {
     elements: { root, input },
@@ -30,6 +30,8 @@
       {label}
     </label>
     <button
+      type="button"
+      data-test-id={testid}
       use:melt={$root}
       class="relative h-6 cursor-default rounded-full bg-gray-600 transition-colors data-[state=checked]:bg-primary"
       id="airplane-mode"

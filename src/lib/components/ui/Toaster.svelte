@@ -1,7 +1,11 @@
 <script lang="ts" context="module">
   import { createToaster } from "@melt-ui/svelte";
+  import { melt } from "@melt-ui/svelte";
+  import { flip } from "svelte/animate";
+  import { fly } from "svelte/transition";
 
   export type ToastData = {
+    testid?: string;
     title?: string;
     description?: string;
     type: "success" | "error" | "info" | "warning";
@@ -27,18 +31,13 @@
   export const addToast = toaster.helpers.addToast;
 </script>
 
-<script lang="ts">
-  import { melt } from "@melt-ui/svelte";
-  import { flip } from "svelte/animate";
-  import { fly } from "svelte/transition";
-</script>
-
 <div
   class="fixed right-0 top-0 z-50 m-4 flex flex-col items-end gap-2 md:bottom-0 md:top-auto"
   use:portal
 >
   {#each $toasts as { id, data } (id)}
     <div
+      data-test-id={data.testid}
       use:melt={$content(id)}
       animate:flip={{ duration: 500 }}
       in:fly={{ duration: 150, x: "100%" }}

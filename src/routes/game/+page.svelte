@@ -41,13 +41,14 @@
 </script>
 
 <div
-  class="min-h-screen bg-base-200 flex flex-col items-center py-8 px-4 gap-8"
+  class="min-h-screen bg-base-200 flex flex-col items-center py-8 px-4 gap-7"
 >
   <header class="flex w-full max-w-6xl justify-between items-center">
     <h1 class="font-extrabold text-5xl drop-shadow-sm">
       {roundTitle}
     </h1>
     <Switch
+      testid="dev-mode-switch"
       label="Режим разработчика"
       checked={game.devMode}
       onChange={(v: boolean) => (game.devMode = v)}
@@ -57,14 +58,16 @@
   <PlayerPanel />
 
   {#if isRoundFinished}
-    <div class="flex-grow flex flex-col items-center justify-center gap-6">
-      <h2 class="text-4xl font-bold">Раунд завершен!</h2>
+    <div class="grow flex flex-col items-center justify-center gap-6">
+      <h2 data-test-id="round-complete" class="text-4xl font-bold">
+        Раунд завершен!
+      </h2>
       <button class="btn btn-primary btn-lg text-xl" onclick={handleNextRound}>
         {game.phase === "round1" ? "Перейти ко 2 раунду" : "Перейти к финалу"}
       </button>
     </div>
   {:else}
-    <div class="flex-grow w-full max-w-6xl flex flex-col justify-center">
+    <div class="grow w-full max-w-6xl flex flex-col justify-center">
       <Board {themes} />
     </div>
   {/if}

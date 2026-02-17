@@ -27,8 +27,6 @@
     { id: crypto.randomUUID(), name: "", displayKey: "L", eventKey: "l" },
   ]);
 
-  let errorMessage = $state("");
-
   // подготовка раунда
   function prepareRound(
     rawThemes: RawTheme[],
@@ -77,13 +75,12 @@
   }
 
   function handleStartGame() {
-    errorMessage = "";
-
     for (const p of playersInput) {
       const trimmedName = p.name.trim();
       if (!trimmedName) {
         addToast({
           data: {
+            testid: "setup-empty-name-alert",
             title: "Все имена должны быть заполнены!",
             type: "error",
           },
@@ -93,6 +90,7 @@
       if (trimmedName.length > 15) {
         addToast({
           data: {
+            testid: "setup-long-name-alert",
             title: "Имя слишком длинное (максимум 15 символов)!",
             type: "error",
           },
@@ -164,15 +162,6 @@
           </div>
         {/each}
       </div>
-
-      {#if errorMessage}
-        <div
-          data-test-id="setup-alert"
-          class="alert alert-error mt-4 shadow-sm"
-        >
-          <span>{errorMessage}</span>
-        </div>
-      {/if}
 
       <div class="card-actions justify-center mt-6">
         <button

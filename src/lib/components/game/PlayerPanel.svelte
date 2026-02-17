@@ -6,8 +6,9 @@
   {#each game.players as player}
     {@const isCurrent = game.currentPlayerId === player.id}
     <div
+      data-test-id={isCurrent ? "active-player" : ""}
       class="card w-72 bg-base-100 shadow-xl border-4 transition-all duration-300
-             {isCurrent
+        {isCurrent
         ? 'border-primary scale-105 shadow-primary/50'
         : 'border-transparent'}"
     >
@@ -15,7 +16,9 @@
         <h2 class="card-title text-2xl">
           {player.name}
         </h2>
-        <div class="text-5xl font-bold my-4">{player.score}</div>
+        <h3 data-test-id="player-score" class="text-5xl font-bold my-4">
+          {player.score}
+        </h3>
         <div class="badge badge-outline badge-lg mt-2 font-mono">
           Кнопка: {player.key === " " ? "Пробел" : player.key.toUpperCase()}
         </div>

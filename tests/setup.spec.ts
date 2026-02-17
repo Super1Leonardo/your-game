@@ -22,9 +22,12 @@ test.describe("Setup tests", () => {
       await input.fill("АААААААААААААААА");
       await page.getByTestId("setup-continue-button").click();
 
-      await expect(page.getByTestId("setup-alert")).toContainText(
-        "Имя слишком длинное (максимум 15 символов)!"
-      );
+      const toast = page
+        .getByTestId("setup-long-name-alert")
+        .filter({ hasText: "Имя слишком длинное (максимум 15 символов)!" })
+        .first();
+      await expect(toast).toBeVisible();
+
       await input.fill(`Игрок ${i}`);
     }
   });
@@ -34,10 +37,12 @@ test.describe("Setup tests", () => {
     await page.getByTestId("input-2").fill(" ");
     await page.getByTestId("input-3").fill("  ");
     await page.getByTestId("setup-continue-button").click();
-    await expect(page.getByTestId("setup-alert")).toBeVisible();
-    await expect(page.getByTestId("setup-alert")).toContainText(
-      "Все имена должны быть заполнены!"
-    );
+
+    const toast = page
+      .getByTestId("setup-empty-name-alert")
+      .filter({ hasText: "Все имена должны быть заполнены!" })
+      .first();
+    await expect(toast).toBeVisible();
   });
 
   test("4. Redirect to game", async ({ page }) => {

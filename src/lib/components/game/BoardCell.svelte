@@ -25,8 +25,8 @@
     : 'bg-secondary text-secondary-content shadow-md hover:scale-[1.03] active:scale-95 cursor-pointer'}
          {!question.isPlayed && game.devMode && isSpecial
     ? question.type === 'cat'
-      ? 'ring-4 ring-warning ring-inset'
-      : 'ring-4 ring-info ring-inset'
+      ? 'ring-4 ring-accent ring-inset'
+      : 'ring-4 ring-primary ring-inset'
     : ''}
   "
   disabled={question.isPlayed}
@@ -36,7 +36,7 @@
 
   {#if game.devMode && !question.isPlayed && isSpecial}
     <div
-      class="text-[10px] font-normal uppercase opacity-80 absolute top-1 right-2"
+      class="text-lg font-normal uppercase opacity-80 absolute top-1 right-2"
     >
       {question.type}
     </div>
