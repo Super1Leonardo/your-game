@@ -12,25 +12,25 @@
         ? 'border-primary scale-105 shadow-primary/50'
         : 'border-transparent'}"
     >
-      <div class="card-body items-center text-center p-6">
+      <div class="card-body items-center text-center p-4">
         <h2 class="card-title text-2xl">
           {player.name}
         </h2>
-        <h3 data-test-id="player-score" class="text-5xl font-bold my-4">
+        <h3 data-test-id="player-score" class="text-5xl mb-2 font-bold">
           {player.score}
         </h3>
-        <div class="badge badge-outline badge-lg mt-2 font-mono">
+        <div class="badge badge-outline badge-lg font-mono">
           Кнопка: {player.key === " " ? "Пробел" : player.key.toUpperCase()}
         </div>
 
         {#if game.devMode}
-          <div class="flex mt-4">
+          <div class="flex mt-2">
             <button
-              class="btn btn-sm btn-error text-sm rounded-r-none"
+              class="btn btn-sm btn-soft btn-error text-sm rounded-r-none"
               onclick={() => (player.score -= 100)}>Убрать 100</button
             >
             <button
-              class="btn flex btn-sm btn-success text-sm rounded-l-none"
+              class="btn flex btn-sm btn-soft btn-success text-sm rounded-l-none"
               onclick={() => (player.score += 100)}>Добавить 100</button
             >
           </div>

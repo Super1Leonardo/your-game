@@ -21,7 +21,7 @@
 <button
   class="w-full h-full btn text-4xl font-extrabold transition-all duration-200 flex items-center justify-center relative
          {question.isPlayed
-    ? 'bg-transparent text-transparent cursor-default'
+    ? 'hidden'
     : 'bg-secondary text-secondary-content shadow-md hover:scale-[1.03] active:scale-95 cursor-pointer'}
          {!question.isPlayed && game.devMode && isSpecial
     ? question.type === 'cat'

@@ -6,12 +6,12 @@
 </script>
 
 <div
-  class="w-full bg-base-300 rounded-box p-4 shadow-inner flex flex-col gap-2 border border-base-content/10"
+  class="w-full rounded-box p-4 shadow-inner flex flex-col gap-2 border-primary border-2"
 >
   {#each themes as theme}
     <div class="flex gap-2 h-20">
       <div
-        class="flex-[1.5] bg-neutral text-neutral-content rounded-btn flex items-center justify-center text-center px-4 font-bold text-lg shadow-md leading-tight"
+        class="flex-[1.5] rounded-box bg-primary/10 text-neutral-content rounded-btn flex items-center justify-center text-center px-4 font-bold text-lg shadow-md leading-tight"
       >
         {theme.name}
       </div>

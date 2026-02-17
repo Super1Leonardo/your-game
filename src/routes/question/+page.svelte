@@ -9,6 +9,22 @@
 
   let answerInput = $state("");
 
+  let pausedRemainingMs = $state<number | null>(null);
+
+  function pauseTimer() {
+    if (game.timerEndsAt) {
+      pausedRemainingMs = Math.max(0, game.timerEndsAt - Date.now());
+      game.timerEndsAt = null;
+    }
+  }
+
+  function resumeTimer() {
+    if (pausedRemainingMs !== null) {
+      game.timerEndsAt = Date.now() + pausedRemainingMs;
+      pausedRemainingMs = null;
+    }
+  }
+
   onMount(() => {
     if (!game.activeQuestion) {
       goto("/game");
@@ -105,8 +121,36 @@
           </h2>
 
           {#if game.devMode}
-            <div class="alert alert-warning shadow-sm mt-4">
-              <span>Ответ: <strong>{game.activeQuestion.answer}</strong></span>
+            <div class="flex items-stretch gap-3 mt-4 w-full">
+              <div
+                class="flex-1 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
+              >
+                <span>Ответ: <strong>{game.activeQuestion.answer}</strong></span
+                >
+              </div>
+
+              {#if game.timerEndsAt}
+                <button
+                  class="btn btn-warning flex-1 text-lg h-auto"
+                  onclick={pauseTimer}
+                >
+                  Пауза
+                </button>
+              {:else if pausedRemainingMs !== null && !game.answeringPlayerId}
+                <button
+                  class="btn btn-success flex-1 text-lg h-auto"
+                  onclick={resumeTimer}
+                >
+                  Возобновить
+                </button>
+              {/if}
+
+              <button
+                class="btn btn-error flex-1 text-lg h-auto"
+                onclick={handleTimeUp}
+              >
+                Завершить время
+              </button>
             </div>
           {/if}
 
