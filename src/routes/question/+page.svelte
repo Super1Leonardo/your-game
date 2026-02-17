@@ -5,18 +5,9 @@
   import { addToast } from "$lib/components/ui/Toaster.svelte";
   import { onMount } from "svelte";
   import { initKeyboardManager } from "$lib/utils/keyboardManager";
-  import Switch from "$lib/components/ui/Switch.svelte";
+  import Header from "$lib/components/game/Header.svelte";
 
   let answerInput = $state("");
-
-  let roundTitle = $derived.by(() => {
-    if (game.phase === "round1") {
-      return "Раунд 1";
-    } else if (game.phase === "round2") {
-      return "Раунд 2";
-    }
-    return "";
-  });
 
   onMount(() => {
     if (!game.activeQuestion) {
@@ -33,8 +24,7 @@
       game.timerEndsAt = Date.now() + 30000;
     }
 
-    // подключаем менеджер клавиатуры и автоматически отписываемся при уничтожении компонента
-    return initKeyboardManager();
+    return initKeyboardManager(); // менеджер клавиатуры и отписка при уничтожении компонента
   });
 
   function closeQuestion(msg: string) {
@@ -96,89 +86,81 @@
   }
 </script>
 
-<header class="flex w-full max-w-6xl justify-between items-center">
-  <h1 class="font-extrabold text-5xl drop-shadow-sm">
-    {roundTitle}
-  </h1>
-  <Switch
-    testid="dev-mode-switch"
-    label="Режим разработчика"
-    checked={game.devMode}
-    onChange={(v: boolean) => (game.devMode = v)}
-  />
-</header>
 <div
   class="min-h-screen bg-base-200 flex flex-col items-center justify-center p-4"
 >
-  {#if game.activeQuestion}
-    <div
-      class="card w-full max-w-4xl bg-base-100 shadow-2xl border-t-4 border-primary"
-    >
-      <div class="card-body items-center text-center p-10 gap-8">
-        <div class="badge badge-primary badge-lg p-4 text-xl">
-          {game.activeQuestion.price} баллов
-        </div>
-
-        <h2 class="text-4xl font-extrabold leading-tight">
-          {game.activeQuestion.text}
-        </h2>
-
-        {#if game.devMode}
-          <div class="alert alert-warning shadow-sm mt-4">
-            <span>Ответ: <strong>{game.activeQuestion.answer}</strong></span>
+  <Header />
+  <div class="grow w-full flex flex-col items-center justify-center">
+    {#if game.activeQuestion}
+      <div
+        class="card w-full max-w-4xl bg-base-100 shadow-2xl border-t-4 border-primary"
+      >
+        <div class="card-body items-center text-center p-10 gap-8">
+          <div class="badge badge-primary badge-lg p-4 text-xl">
+            {game.activeQuestion.price} баллов
           </div>
-        {/if}
 
-        {#if !game.answeringPlayerId}
-          <div class="flex flex-col items-center gap-4 mt-4">
-            <Timer onTimeUp={handleTimeUp} />
-            <p class="text-base-content/70 animate-pulse">
-              Нажмите свою клавишу для ответа...
-            </p>
-            <div class="flex gap-4 mt-2">
-              {#each game.players as player}
-                <div
-                  class="badge badge-outline badge-lg {game.attemptedPlayerIds.includes(
-                    player.id
-                  )
-                    ? 'opacity-30 line-through'
-                    : ''}"
-                >
-                  {player.name} ({player.key === " "
-                    ? "Пробел"
-                    : player.key.toUpperCase()})
-                </div>
-              {/each}
+          <h2 class="text-4xl font-extrabold leading-tight">
+            {game.activeQuestion.text}
+          </h2>
+
+          {#if game.devMode}
+            <div class="alert alert-warning shadow-sm mt-4">
+              <span>Ответ: <strong>{game.activeQuestion.answer}</strong></span>
             </div>
-          </div>
-        {:else}
-          {@const answeringPlayer = game.players.find(
-            (p) => p.id === game.answeringPlayerId
-          )}
-          <div
-            class="w-full max-w-md flex flex-col gap-4 animate-in fade-in zoom-in duration-300"
-          >
+          {/if}
+
+          {#if !game.answeringPlayerId}
+            <div class="flex flex-col items-center gap-4 mt-4">
+              <Timer onTimeUp={handleTimeUp} />
+              <p class="text-base-content/70 animate-pulse">
+                Нажмите свою клавишу для ответа...
+              </p>
+              <div class="flex gap-4 mt-2">
+                {#each game.players as player}
+                  <div
+                    class="badge badge-outline badge-lg {game.attemptedPlayerIds.includes(
+                      player.id
+                    )
+                      ? 'opacity-30 line-through'
+                      : ''}"
+                  >
+                    {player.name} ({player.key === " "
+                      ? "Пробел"
+                      : player.key.toUpperCase()})
+                  </div>
+                {/each}
+              </div>
+            </div>
+          {:else}
+            {@const answeringPlayer = game.players.find(
+              (p) => p.id === game.answeringPlayerId
+            )}
             <div
-              class="alert alert-info shadow-md justify-center text-xl font-bold"
+              class="w-full max-w-md flex flex-col gap-4 animate-in fade-in zoom-in duration-300"
             >
-              Отвечает: {answeringPlayer?.name}
+              <div
+                class="alert alert-info shadow-md justify-center text-xl font-bold"
+              >
+                Отвечает: {answeringPlayer?.name}
+              </div>
+              <input
+                type="text"
+                placeholder="Введите ваш ответ..."
+                class="input input-bordered input-primary input-lg w-full text-center"
+                bind:value={answerInput}
+                onkeydown={(e) => e.key === "Enter" && submitAnswer()}
+              />
+              <button
+                class="btn btn-primary btn-lg w-full"
+                onclick={submitAnswer}
+              >
+                Ответить
+              </button>
             </div>
-            <input
-              type="text"
-              placeholder="Введите ваш ответ..."
-              class="input input-bordered input-primary input-lg w-full text-center"
-              bind:value={answerInput}
-              onkeydown={(e) => e.key === "Enter" && submitAnswer()}
-            />
-            <button
-              class="btn btn-primary btn-lg w-full"
-              onclick={submitAnswer}
-            >
-              Ответить
-            </button>
-          </div>
-        {/if}
+          {/if}
+        </div>
       </div>
-    </div>
-  {/if}
+    {/if}
+  </div>
 </div>
