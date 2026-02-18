@@ -43,5 +43,5 @@
   aria-valuemin="0"
   aria-valuemax="30"
 >
-  <span class="text-2xl font-bold">{timeLeft}</span>
+  <span class="text-2xl text-secondary font-bold">{timeLeft}</span>
 </div>

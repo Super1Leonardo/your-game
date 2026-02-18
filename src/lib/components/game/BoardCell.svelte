@@ -9,6 +9,11 @@
     question.type === "cat" || question.type === "auction"
   );
 
+  const specialTranslated: Record<string, string> = {
+    cat: "Кот в мешке",
+    auction: "Аукцион",
+  };
+
   function handleSelect() {
     if (question.isPlayed) return;
 
@@ -19,13 +24,13 @@
 </script>
 
 <button
-  class="w-full h-full btn text-4xl font-extrabold transition-all duration-200 flex items-center justify-center relative
+  class="w-full h-full btn text-4xl font-bold transition-all duration-200 flex items-center justify-center relative
          {question.isPlayed
     ? 'hidden'
     : 'bg-secondary text-secondary-content shadow-md hover:scale-[1.03] active:scale-95 cursor-pointer'}
          {!question.isPlayed && game.devMode && isSpecial
     ? question.type === 'cat'
-      ? 'ring-4 ring-accent ring-inset'
+      ? 'ring-4 ring-warning ring-inset'
       : 'ring-4 ring-primary ring-inset'
     : ''}
   "
@@ -35,10 +40,8 @@
   {question.price}
 
   {#if game.devMode && !question.isPlayed && isSpecial}
-    <div
-      class="text-lg font-normal uppercase opacity-80 absolute top-1 right-2"
-    >
-      {question.type}
+    <div class="text-sm font-bold uppercase opacity-80 absolute top-1">
+      {specialTranslated[question.type]}
     </div>
   {/if}
 </button>

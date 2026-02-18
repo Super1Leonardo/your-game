@@ -132,9 +132,9 @@
 <div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
   <div class="card w-full max-w-lg bg-base-100 shadow-xl">
     <div class="card-body">
-      <h2 class="card-title text-3xl font-bold justify-center mb-6">
+      <h1 class="card-title text-4xl font-bold justify-center mb-4 mt-6">
         Подготовка игры
-      </h2>
+      </h1>
 
       <p class="text-center text-base-content/70 mb-4">
         Введите имена трех игроков. Запомните свои клавиши — они понадобятся,
@@ -144,9 +144,9 @@
       <div class="flex flex-col gap-4">
         {#each playersInput as player, index}
           <div class="form-control w-full">
-            <label class="label" for="player-{index}">
+            <label class="label mb-1" for="player-{index}">
               <span class="label-text font-semibold">Игрок {index + 1}</span>
-              <span class="label-text-alt badge badge-secondary badge-outline">
+              <span class="label-text-alt badge badge-soft badge-secondary">
                 Клавиша: {player.displayKey}
               </span>
             </label>

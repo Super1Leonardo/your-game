@@ -2,14 +2,16 @@
   import { goto } from "$app/navigation";
   import { game } from "$lib/state/gameStore.svelte";
   import Timer from "$lib/components/game/Timer.svelte";
+  import Cat from "$lib/components/game/Cat.svelte";
   import { addToast } from "$lib/components/ui/Toaster.svelte";
   import { onMount } from "svelte";
   import { initKeyboardManager } from "$lib/utils/keyboardManager";
   import Header from "$lib/components/game/Header.svelte";
 
   let answerInput = $state("");
-
-  let pausedRemainingMs = $state<number | null>(null);
+  let isSpecialSetupDone = $state(false);
+  let isCat = $derived(game.activeQuestion?.type === "cat");
+  let pausedRemainingMs: number | null = $state(null);
 
   function pauseTimer() {
     if (game.timerEndsAt) {
@@ -31,8 +33,9 @@
       return;
     }
 
-    // стартуем таймер если вопрос только открыли
+    // стартуем таймер если вопрос только открыли на обычном вопросе
     if (
+      game.activeQuestion?.type === "normal" &&
       !game.answeringPlayerId &&
       !game.timerEndsAt &&
       game.attemptedPlayerIds.length === 0
@@ -81,6 +84,19 @@
       closeQuestion("");
     } else {
       player.score -= game.activeQuestion.price;
+      if (
+        game.activeQuestion.type === "cat" ||
+        game.activeQuestion.type === "auction"
+      ) {
+        addToast({
+          data: {
+            title: `Неверно! -${game.activeQuestion.price}`,
+            type: "error",
+          },
+        });
+        closeQuestion("Вопрос закрыт.");
+        return;
+      }
       game.attemptedPlayerIds.push(player.id);
       addToast({
         data: {
@@ -107,7 +123,9 @@
 >
   <Header />
   <div class="grow w-full flex flex-col items-center justify-center">
-    {#if game.activeQuestion}
+    {#if isCat && !isSpecialSetupDone}
+      <Cat onSetupComplete={() => (isSpecialSetupDone = true)} />
+    {:else if game.activeQuestion}
       <div
         class="card w-full max-w-4xl bg-base-100 shadow-2xl border-t-4 border-primary"
       >
@@ -121,9 +139,9 @@
           </h2>
 
           {#if game.devMode}
-            <div class="flex items-stretch gap-3 mt-4 w-full">
+            <div class="flex justify-center items-stretch gap-3 mt-4 w-full">
               <div
-                class="flex-1 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
+                class=" px-4 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
               >
                 <span>Ответ: <strong>{game.activeQuestion.answer}</strong></span
                 >
@@ -131,14 +149,14 @@
 
               {#if game.timerEndsAt}
                 <button
-                  class="btn btn-warning flex-1 text-lg h-auto"
+                  class="btn btn-warning w-1/5 text-lg h-auto"
                   onclick={pauseTimer}
                 >
                   Пауза
                 </button>
               {:else if pausedRemainingMs !== null && !game.answeringPlayerId}
                 <button
-                  class="btn btn-success flex-1 text-lg h-auto"
+                  class="btn btn-success w-1/5 text-lg h-auto"
                   onclick={resumeTimer}
                 >
                   Возобновить
@@ -146,10 +164,14 @@
               {/if}
 
               <button
-                class="btn btn-error flex-1 text-lg h-auto"
+                class="btn btn-error text-lg h-auto"
                 onclick={handleTimeUp}
               >
-                Завершить время
+                {#if !game.answeringPlayerId}
+                  Завершить время
+                {:else}
+                  Вернуться на главную
+                {/if}
               </button>
             </div>
           {/if}
@@ -183,15 +205,13 @@
             <div
               class="w-full max-w-md flex flex-col gap-4 animate-in fade-in zoom-in duration-300"
             >
-              <div
-                class="alert alert-info shadow-md justify-center text-xl font-bold"
-              >
+              <div class=" shadow-md justify-center text-xl font-bold">
                 Отвечает: {answeringPlayer?.name}
               </div>
               <input
                 type="text"
                 placeholder="Введите ваш ответ..."
-                class="input input-bordered input-primary input-lg w-full text-center"
+                class="input border-2 input-primary input-lg w-full text-center"
                 bind:value={answerInput}
                 onkeydown={(e) => e.key === "Enter" && submitAnswer()}
               />

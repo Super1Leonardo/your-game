@@ -8,7 +8,7 @@ const config = {
     adapter: adapter({
       pages: "public",
       assets: "public",
-      fallback: "index.html", // single page application режим чтобы переход по ссылке .../dashboard не выдавал ошибку
+      fallback: "index.html",
       precompress: false,
       strict: true,
     }),

@@ -50,7 +50,7 @@
         <div>
           <h3
             use:melt={$title(id)}
-            class="flex items-center gap-3 font-semibold"
+            class="flex items-center gap-3 text-lg font-semibold"
           >
             {data.title}
           </h3>
@@ -58,12 +58,6 @@
             {data.description}
           </div>
         </div>
-        <!-- <button
-          use:melt={$close(id)}
-          class="absolute right-4 top-4 grid size-12 place-items-center rounded-full text-primary
-          hover:bg-primary"
-        >
-        </button> -->
       </div>
     </div>
   {/each}
