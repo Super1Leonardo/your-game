@@ -1,6 +1,7 @@
 <script lang="ts">
   import { game } from "$lib/state/gameStore.svelte";
   import Switch from "$lib/components/ui/Switch.svelte";
+  import ThemeSwitcher from "../ui/ThemeSwitcher.svelte";
 
   let roundTitle = $derived.by(() => {
     if (game.phase === "round1") return "Раунд 1";
@@ -14,6 +15,7 @@
   <h1 class="font-extrabold text-5xl drop-shadow-sm">
     {roundTitle}
   </h1>
+  <ThemeSwitcher />
   <Switch
     testid="dev-mode-switch"
     label="Режим разработчика"

@@ -20,7 +20,7 @@ const defaultState: GameState = {
 };
 
 export const game = $state<GameState>(
-  JSON.parse(JSON.stringify(defaultState)) // чтобы не мутировать оригинал defaultState
+  JSON.parse(JSON.stringify(defaultState)) // чтобы не менять оригинал defaultState
 );
 
 export function loadGame() {
@@ -29,7 +29,7 @@ export function loadGame() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        Object.assign(game, parsed); // мутируем game чтобы была реактивность
+        Object.assign(game, parsed); // изменяем game чтобы была реактивность
       } catch (e) {
         console.error("Ошибка при загрузке состояния игры из localStorage", e);
       }

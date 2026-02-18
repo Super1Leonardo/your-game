@@ -84,7 +84,7 @@
         <div class="relative">
           <input
             use:melt={$input}
-            class="input input-bordered input-primary w-full"
+            class="input input-bordered border-2 input-primary w-full"
             placeholder="Начните вводить имя..."
           />
         </div>
