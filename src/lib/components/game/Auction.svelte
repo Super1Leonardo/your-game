@@ -1,17 +1,12 @@
 <script lang="ts">
-  import { createDialog, melt } from "@melt-ui/svelte";
   import { game } from "$lib/state/gameStore.svelte";
-  import { fade } from "svelte/transition";
   import { addToast } from "$lib/components/ui/Toaster.svelte";
   import { goto } from "$app/navigation";
   import { devMode } from "$lib/state/devStore.svelte";
   import DevModeButtons from "./DevModeButtons.svelte";
+  import GameDialog from "./GameDialog.svelte";
 
   let { onSetupComplete }: { onSetupComplete: () => void } = $props();
-
-  const {
-    elements: { portalled, overlay, content, title },
-  } = createDialog({ defaultOpen: true, forceVisible: true });
 
   let activePlayerIds = $state(game.players.map((p) => p.id)); // начинает тот кто выбрал вопрос
   let currentPlayerIndex = $state(
@@ -121,78 +116,69 @@
   }
 </script>
 
-<div use:melt={$portalled}>
-  <div
-    use:melt={$overlay}
-    class="fixed inset-0 z-49 bg-black/60 backdrop-blur-sm"
-    transition:fade={{ duration: 150 }}
-  ></div>
-  <div
-    use:melt={$content}
-    class="fixed left-1/2 top-1/2 z-50 w-[90vw] max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-box bg-base-100 p-8 shadow-2xl flex flex-col items-center text-center gap-6"
-    transition:fade={{ duration: 150 }}
-  >
-    <h2 use:melt={$title} class="text-4xl font-extrabold">Аукцион!</h2>
-    <div class="flex flex-col gap-2 bg-base-200 p-4 rounded-xl w-full">
-      <p class="text-lg">
-        Номинал: <strong class="text-secondary"
-          >{game.activeQuestion?.price}</strong
-        >
+<GameDialog
+  contentClass="max-w-lg flex flex-col items-center text-center gap-6"
+>
+  <h2 class="text-4xl font-extrabold">Аукцион!</h2>
+  <div class="flex flex-col gap-2 bg-base-200 p-4 rounded-xl w-full">
+    <p class="text-lg">
+      Номинал: <strong class="text-secondary"
+        >{game.activeQuestion?.price}</strong
+      >
+    </p>
+    {#if highestBidderId}
+      <p class="text-xl">
+        Ставка: <strong>{currentBet}</strong> ({highestBidderName})
       </p>
-      {#if highestBidderId}
-        <p class="text-xl">
-          Ставка: <strong>{currentBet}</strong> ({highestBidderName})
-        </p>
-      {/if}
-      {#if isAllInMode}
-        <div
-          class="badge badge-error badge-lg mx-auto font-bold animate-pulse mt-2"
-        >
-          Режим Ва-банк!
-        </div>
-      {/if}
-    </div>
-
-    <div class="divider font-bold opacity-50 text-sm uppercase tracking-wide">
-      Ход игрока
-    </div>
-
-    <h3 class="text-3xl font-bold text-secondary">{activePlayer?.name}</h3>
-    <p class="text-xl">На счете: <strong>{activePlayerScore}</strong></p>
-
-    <div class="flex gap-4 h-12 w-full justify-center mt-2">
-      <input
-        type="number"
-        class="input input-bordered input-primary h-full px-5 py-2 border-2 text-center text-xl font-bold"
-        placeholder="Сумма"
-        bind:value={betInput}
-        onkeydown={(e) =>
-          e.key === "Enter" &&
-          typeof betInput === "number" &&
-          placeBet(betInput, false)}
-      />
-      <button
-        class="btn btn-primary h-full text-lg"
-        onclick={() =>
-          typeof betInput === "number" && placeBet(betInput, false)}
+    {/if}
+    {#if isAllInMode}
+      <div
+        class="badge badge-error badge-lg mx-auto font-bold animate-pulse mt-2"
       >
-        Поставить
-      </button>
-    </div>
-
-    <div class="flex gap-4 w-full mt-4">
-      <button class="btn btn-outline btn-error flex-1 text-lg" onclick={fold}>
-        Пас
-      </button>
-      <button
-        class="btn btn-success btn-outline flex-1 text-lg"
-        onclick={() => placeBet(activePlayerScore, true)}
-      >
-        Ва-банк!
-      </button>
-    </div>
-    {#if devMode.enabled}
-      <DevModeButtons />
+        Режим Ва-банк!
+      </div>
     {/if}
   </div>
-</div>
+
+  <div class="divider font-bold opacity-50 text-sm uppercase tracking-wide">
+    Ход игрока
+  </div>
+
+  <h3 class="text-3xl font-bold text-secondary">{activePlayer?.name}</h3>
+  <p class="text-xl">На счете: <strong>{activePlayerScore}</strong></p>
+
+  <div class="flex gap-4 h-12 w-full justify-center mt-2">
+    <input
+      type="number"
+      class="input input-bordered input-primary h-full px-5 py-2 border-2 text-center text-xl font-bold"
+      placeholder="Сумма"
+      bind:value={betInput}
+      onkeydown={(e) =>
+        e.key === "Enter" &&
+        typeof betInput === "number" &&
+        placeBet(betInput, false)}
+    />
+    <button
+      class="btn btn-primary h-full text-lg"
+      onclick={() => typeof betInput === "number" && placeBet(betInput, false)}
+    >
+      Поставить
+    </button>
+  </div>
+
+  <div class="flex gap-4 w-full mt-4">
+    <button class="btn btn-outline btn-error flex-1 text-lg" onclick={fold}>
+      Пас
+    </button>
+    <button
+      class="btn btn-success btn-outline flex-1 text-lg"
+      onclick={() => placeBet(activePlayerScore, true)}
+    >
+      Ва-банк!
+    </button>
+  </div>
+
+  {#if devMode.enabled}
+    <DevModeButtons />
+  {/if}
+</GameDialog>
