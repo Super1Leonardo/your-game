@@ -140,7 +140,10 @@
               <div
                 class=" px-4 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
               >
-                <span>Ответ: <strong>{game.activeQuestion.answer}</strong></span
+                <span
+                  >Ответ: <strong data-test-id="question-answer"
+                    >{game.activeQuestion.answer}</strong
+                  ></span
                 >
               </div>
 

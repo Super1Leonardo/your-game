@@ -9,7 +9,7 @@
   };
 
   const toaster = createToaster<ToastData>({
-    closeDelay: 3000000,
+    closeDelay: 3000,
   });
 
   export const {

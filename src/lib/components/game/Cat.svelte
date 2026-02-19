@@ -21,7 +21,6 @@
   function confirmPlayer() {
     if (tempSelectedPlayer) {
       chosenPlayer = tempSelectedPlayer;
-      dialogOpen = false; // Диалог закроется сам с красивой CSS-анимацией
       step = "showTheme";
     }
   }
@@ -40,31 +39,33 @@
   );
 </script>
 
-<GameDialog bind:open={dialogOpen} contentClass="max-w-md">
-  <h2 class="text-3xl font-extrabold mb-2">Кот в мешке!</h2>
-  <p class="text-base-content/70 mb-6">Кому передадим этого кота?</p>
+{#if step === "selectPlayer"}
+  <GameDialog open={true} contentClass="max-w-md">
+    <h2 class="text-3xl font-extrabold mb-2">Кот в мешке!</h2>
+    <p class="text-base-content/70 mb-6">Кому передадим этого кота?</p>
 
-  <div class="flex flex-col gap-2 mb-8">
-    <label class="text-sm font-semibold">Игрок:</label>
+    <div class="flex flex-col gap-2 mb-8">
+      <label class="text-sm font-semibold">Игрок:</label>
+      <PlayerCombobox
+        players={otherPlayers}
+        bind:selectedPlayer={tempSelectedPlayer}
+      />
+    </div>
 
-    <PlayerCombobox
-      players={otherPlayers}
-      bind:selectedPlayer={tempSelectedPlayer}
-    />
-  </div>
+    <button
+      data-test-id="cat-confirm-button"
+      class="btn btn-primary w-full btn-lg mb-4"
+      onclick={confirmPlayer}
+      disabled={!tempSelectedPlayer}
+    >
+      Подтвердить выбор
+    </button>
 
-  <button
-    class="btn btn-primary w-full btn-lg mb-4"
-    onclick={confirmPlayer}
-    disabled={!tempSelectedPlayer}
-  >
-    Подтвердить выбор
-  </button>
-
-  {#if devMode.enabled}
-    <DevModeButtons />
-  {/if}
-</GameDialog>
+    {#if devMode.enabled}
+      <DevModeButtons />
+    {/if}
+  </GameDialog>
+{/if}
 
 {#if step === "showTheme" || step === "bet"}
   <div
@@ -81,6 +82,7 @@
           {game.activeQuestion?.secretTheme || "Без темы"}
         </h2>
         <button
+          data-test-id="cat-to-bet-button"
           class="btn btn-primary btn-lg mt-4 w-full"
           onclick={() => (step = "bet")}
         >
@@ -93,6 +95,7 @@
         <div class="flex gap-4 w-full justify-center mt-6">
           {#each availableBets as bet}
             <button
+              data-test-id="cat-bet-{bet}"
               class="btn btn-primary btn-lg flex-1 text-2xl"
               onclick={() => placeBet(bet)}
             >

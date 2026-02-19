@@ -27,7 +27,7 @@ test.describe("Question tests", () => {
     await expect(page.getByTestId("player-score").first()).toHaveText("100");
   });
 
-  test("2. Right answer logic", async ({ page }) => {
+  test("2. Wrong answer logic", async ({ page }) => {
     await expect(
       page.getByText("Нажмите свою клавишу для ответа...")
     ).toBeVisible();

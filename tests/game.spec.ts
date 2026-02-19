@@ -35,7 +35,6 @@ test.describe("Game board tests", () => {
     page,
   }) => {
     await page.getByTestId("dev-mode-switch").click();
-    await page.pause();
     await page.getByRole("button", { name: "Добавить 100" }).first().click();
     await expect(page.getByTestId("player-score").first()).toHaveText("100");
     await expect(page.getByText("Кот в мешке", { exact: true })).toHaveCount(2);
@@ -65,9 +64,7 @@ test.describe("Game board tests", () => {
         localStorage.setItem("igra-state", JSON.stringify(state));
       }
     });
-
     await page.reload();
-
     const heading = page.getByRole("heading", { level: 1 });
     await expect(heading).toHaveText("Раунд 2");
 
@@ -124,7 +121,6 @@ test.describe("Game board tests", () => {
       }
     });
     await page.reload();
-    await page.pause();
     await expect(page.getByTestId("round-complete")).toHaveText(
       "Раунд завершен!"
     );
