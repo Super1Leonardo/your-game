@@ -1,10 +1,11 @@
 <script lang="ts">
   import { game } from "$lib/state/gameStore.svelte";
 
-  let { onTimeUp }: { onTimeUp: () => void } = $props();
+  let props: { onTimeUp: () => void; time?: number } = $props();
 
-  let timeLeft = $state(30);
-  let progress = $state(30); // процент заполнения кольца
+  const initialTime = props.time ?? 30;
+  let timeLeft = $state(initialTime);
+  let progress = $state(initialTime); // процент заполнения кольца
 
   $effect(() => {
     if (!game.timerEndsAt) return;
@@ -17,13 +18,13 @@
       const now = Date.now();
       const remainingMs = Math.max(0, game.timerEndsAt - now);
 
-      progress = (remainingMs / 30000) * 100;
+      progress = (remainingMs / (initialTime * 1000)) * 100;
       timeLeft = Math.ceil(remainingMs / 1000);
 
       if (remainingMs > 0) {
         animationFrameId = requestAnimationFrame(update);
       } else {
-        onTimeUp();
+        props.onTimeUp();
       }
     }
 

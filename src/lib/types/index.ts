@@ -15,7 +15,7 @@ export interface Question {
   answer: string;
   price: number;
   isPlayed: boolean;
-  secretTheme?: string; // для кота в мешке и финала
+  secretTheme?: string; // для кота в мешке аукциона и финала
 }
 
 export interface Theme {
