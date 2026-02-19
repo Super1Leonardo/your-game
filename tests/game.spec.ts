@@ -34,15 +34,16 @@ test.describe("Game board tests", () => {
   test("2. Dev mode toggles buttons and special questions", async ({
     page,
   }) => {
-    await page.getByLabel("Режим разработчика").click();
-    await page.getByRole("button", { name: "+100" }).first().click();
+    await page.getByTestId("dev-mode-switch").click();
+    await page.pause();
+    await page.getByRole("button", { name: "Добавить 100" }).first().click();
     await expect(page.getByTestId("player-score").first()).toHaveText("100");
-    await expect(page.getByText("cat", { exact: true })).toHaveCount(2);
-    await expect(page.getByText("auction", { exact: true })).toHaveCount(2);
+    await expect(page.getByText("Кот в мешке", { exact: true })).toHaveCount(2);
+    await expect(page.getByText("Аукцион", { exact: true })).toHaveCount(2);
   });
   test("3. State doesn't change after reload", async ({ page }) => {
-    await page.getByLabel("Режим разработчика").click();
-    await page.getByRole("button", { name: "+100" }).first().click();
+    await page.getByTestId("dev-mode-switch").click();
+    await page.getByRole("button", { name: "Добавить 100" }).first().click();
     await page.reload();
     await expect(page).toHaveURL("/game");
     await expect(page.getByTestId("player-score").first()).toHaveText("100");
@@ -93,6 +94,9 @@ test.describe("Game board tests", () => {
   });
 
   test("7. Played questions become disabled", async ({ page }) => {
+    await expect(
+      page.getByRole("button", { name: "100", exact: true })
+    ).toHaveCount(6);
     await page.evaluate(() => {
       const stateRaw = localStorage.getItem("igra-state");
       if (stateRaw) {
@@ -103,10 +107,9 @@ test.describe("Game board tests", () => {
     });
     await page.reload();
 
-    const playedButton = page
-      .getByRole("button", { name: "100", exact: true })
-      .first();
-    await expect(playedButton).toBeDisabled();
+    await expect(
+      page.getByRole("button", { name: "100", exact: true })
+    ).toHaveCount(5);
   });
 
   test("8. Round completion screen", async ({ page }) => {

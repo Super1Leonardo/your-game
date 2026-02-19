@@ -5,7 +5,7 @@
 
   const initialTime = props.time ?? 30;
   let timeLeft = $state(initialTime);
-  let progress = $state(initialTime); // процент заполнения кольца
+  let progress = $state(100); // процент заполнения кольца
 
   $effect(() => {
     if (!game.timerEndsAt) return;

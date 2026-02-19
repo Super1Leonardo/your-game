@@ -1,1 +1,0 @@
-button.svelte-95137j{--w: 2.75rem;--padding: .125rem;width:var(--w)}.thumb.svelte-95137j{--size: 1.25rem;width:var(--size);height:var(--size);transform:translate(var(--padding))}[data-state=checked] .thumb.svelte-95137j{transform:translate(calc(var(--w) - var(--size) - var(--padding)))}

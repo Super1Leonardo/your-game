@@ -9,7 +9,7 @@
   };
 
   const toaster = createToaster<ToastData>({
-    closeDelay: 3000,
+    closeDelay: 3000000,
   });
 
   export const {
@@ -35,7 +35,7 @@
 </script>
 
 <div
-  class="fixed bottom-0 right-0 z-[100] m-6 flex flex-col items-end gap-2 pointer-events-none"
+  class="fixed bottom-0 right-0 z-100 m-6 flex flex-col items-end gap-2 pointer-events-none"
   use:portal
 >
   {#each $toasts as { id, data } (id)}

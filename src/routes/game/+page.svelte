@@ -3,6 +3,7 @@
   import PlayerPanel from "$lib/components/game/PlayerPanel.svelte";
   import Board from "$lib/components/game/Board.svelte";
   import Header from "$lib/components/game/Header.svelte";
+  import { goto } from "$app/navigation";
 
   let themes = $derived.by(() => {
     if (game.phase === "round1") {
@@ -28,6 +29,7 @@
       game.currentPlayerId = lowestPlayer.id;
     } else if (game.phase === "round2") {
       game.phase = "final";
+      goto("/final");
     }
   }
 </script>

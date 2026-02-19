@@ -9,8 +9,8 @@
 
   let finalPlayers = $derived(game.players.filter((p) => p.score > 0));
 
-  // Step вычисляется автоматически на основе данных в сторе (защита от F5)
   let step = $derived.by(() => {
+    // вычисляется автоматически на основе данных в сторе (защита от F5)
     if (!game.finalState) return "betting";
     if (Object.keys(game.finalState.bets).length < finalPlayers.length)
       return "betting";

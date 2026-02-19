@@ -12,7 +12,7 @@
   });
 </script>
 
-<header class="flex w-full z-51 max-w-6xl justify-between items-center">
+<header class="flex w-full z-51 max-w-6xl justify-around items-center">
   <h1 class="font-extrabold text-5xl w-48 mr-3 drop-shadow-sm">
     {roundTitle}
   </h1>

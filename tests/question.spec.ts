@@ -16,7 +16,46 @@ test.describe("Question tests", () => {
     await expect(page).toHaveURL("/question");
   });
   test("1. Right answer logic", async ({ page }) => {
+    await expect(
+      page.getByText("Нажмите свою клавишу для ответа...")
+    ).toBeVisible();
     await page.keyboard.press("a");
     await expect(page.getByText("Отвечает: Игрок 1")).toBeVisible();
+    await page.getByTestId("question-input").fill("HTML");
+    await page.getByTestId("question-submit").click();
+    await expect(page).toHaveURL("/game");
+    await expect(page.getByTestId("player-score").first()).toHaveText("100");
+  });
+
+  test("2. Right answer logic", async ({ page }) => {
+    await expect(
+      page.getByText("Нажмите свою клавишу для ответа...")
+    ).toBeVisible();
+    await page.keyboard.press("a");
+    await expect(page.getByText("Отвечает: Игрок 1")).toBeVisible();
+    await page.pause();
+    await page.getByTestId("question-input").fill("AAAAAAAA");
+    await page.getByTestId("question-submit").click();
+    await page.keyboard.press(" ");
+    await expect(page.getByText("Отвечает: Игрок 2")).toBeVisible();
+    await page.getByTestId("question-input").fill("HTML");
+    await page.getByTestId("question-submit").click();
+    await expect(page).toHaveURL("/game");
+    await expect(page.getByTestId("wrong-answer-100")).toBeVisible();
+    await expect(page.getByTestId("success-answer-100")).toBeVisible();
+    await expect(page.getByTestId("player-score").first()).toHaveText("-100");
+    await expect(page.getByTestId("player-score").nth(1)).toHaveText("100");
+  });
+
+  test("3. Time out logic", async ({ page }) => {
+    await expect(
+      page.getByText("Нажмите свою клавишу для ответа...")
+    ).toBeVisible();
+    await page.clock.install();
+    await page.clock.fastForward(31000);
+    await expect(page).toHaveURL("/game", { timeout: 32000 });
+    await expect(page.getByTestId("player-score").first()).toHaveText("0");
+    await expect(page.getByTestId("player-score").nth(1)).toHaveText("0");
+    await expect(page.getByTestId("player-score").nth(2)).toHaveText("0");
   });
 });

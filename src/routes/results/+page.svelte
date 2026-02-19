@@ -4,24 +4,22 @@
   import Header from "$lib/components/game/Header.svelte";
   import { onMount } from "svelte";
 
-  // Сортируем игроков по убыванию очков (копируем массив, чтобы не мутировать стор)
   let sortedPlayers = $derived(
-    [...game.players].sort((a, b) => b.score - a.score)
+    [...game.players].sort((a, b) => b.score - a.score) // копия чтобы не мутировать стор
   );
 
-  // Победитель — первый в отсортированном списке
-  let winner = $derived(sortedPlayers[0]);
+  let winner = $derived(sortedPlayers[0]); // первый по убыванию
 
   onMount(() => {
-    // Защита: если перешли на страницу без игроков, выкидываем на главную
     if (game.players.length === 0) {
+      // защита когда нет игроков
       goto("/");
     }
   });
 
   function startNewGame() {
-    resetGame(); // Сбрасываем глобальный стор
-    goto("/setup"); // Редиректим на окно настройки имен, как ты и просил
+    resetGame();
+    goto("/setup");
   }
 </script>
 

@@ -28,7 +28,7 @@
   class="w-full h-full btn text-4xl font-bold transition-all duration-200 flex items-center justify-center relative
          {question.isPlayed
     ? 'hidden'
-    : 'bg-secondary text-secondary-content shadow-md hover:scale-[1.03] active:scale-95 cursor-pointer'}
+    : 'bg-base-100 text-secondary shadow-md hover:scale-[1.03] active:scale-95 cursor-pointer'}
          {!question.isPlayed && devMode.enabled && isSpecial
     ? question.type === 'cat'
       ? 'ring-4 ring-warning ring-inset'

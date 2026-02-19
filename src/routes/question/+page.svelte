@@ -16,19 +16,18 @@
   let isSpecialSetupDone = $state(false);
   let isCat = $derived(game.activeQuestion?.type === "cat");
   let isAuction = $derived(game.activeQuestion?.type === "auction");
-  let pausedRemainingMs: number | null = $state(null); // время на котором паузу поставили
 
   function pauseTimer() {
     if (game.timerEndsAt) {
-      pausedRemainingMs = Math.max(0, game.timerEndsAt - Date.now());
+      game.pausedRemainingMs = Math.max(0, game.timerEndsAt - Date.now());
       game.timerEndsAt = null;
     }
   }
 
   function resumeTimer() {
-    if (pausedRemainingMs !== null) {
-      game.timerEndsAt = Date.now() + pausedRemainingMs;
-      pausedRemainingMs = null;
+    if (game.pausedRemainingMs !== null) {
+      game.timerEndsAt = Date.now() + game.pausedRemainingMs;
+      game.pausedRemainingMs = null;
     }
   }
 
@@ -72,6 +71,7 @@
         data: {
           title: `Верно! +${game.activeQuestion.price}`,
           type: "success",
+          testid: `success-answer-${game.activeQuestion.price}`,
         },
       });
       endQuestion("");
@@ -85,6 +85,7 @@
           data: {
             title: `Неверно! -${game.activeQuestion.price}`,
             type: "error",
+            testid: `wrong-answer-${game.activeQuestion.price}`,
           },
         });
         endQuestion("Вопрос закрыт.");
@@ -95,6 +96,7 @@
         data: {
           title: `Неверно! -${game.activeQuestion.price}`,
           type: "error",
+          testid: `wrong-answer-${game.activeQuestion.price}`,
         },
       });
 
@@ -105,7 +107,7 @@
         endQuestion("Никто не дал верного ответа.");
       } else {
         // возобновляем таймер для остальных
-        game.timerEndsAt = Date.now() + 30000;
+        resumeTimer();
       }
     }
   }
@@ -149,7 +151,7 @@
                 >
                   Пауза
                 </button>
-              {:else if pausedRemainingMs !== null && !game.answeringPlayerId}
+              {:else if game.pausedRemainingMs !== null && !game.answeringPlayerId}
                 <button
                   class="btn btn-success w-1/5 text-lg h-auto"
                   onclick={resumeTimer}
@@ -194,12 +196,14 @@
               </div>
               <input
                 type="text"
+                data-test-id="question-input"
                 placeholder="Введите ваш ответ..."
                 class="input border-2 input-primary input-lg w-full text-center"
                 bind:value={answerInput}
                 onkeydown={(e) => e.key === "Enter" && submitAnswer()}
               />
               <button
+                data-test-id="question-submit"
                 class="btn btn-primary btn-lg w-full"
                 onclick={submitAnswer}
               >

@@ -48,6 +48,7 @@ export interface GameState {
   currentPlayerId: string | null; // кто выбирает вопрос
   activeQuestion: Question | null; // вопрос на экране
   answeringPlayerId: string | null; // кто отвечает
+  pausedRemainingMs: number | null;
 
   // ход вопроса
   attemptedPlayerIds: string[]; // кто уже ошибся

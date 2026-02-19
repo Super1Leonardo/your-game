@@ -59,7 +59,10 @@ export function initKeyboardManager() {
     // игрок нажал кнопку и не ошибся в вопросе
     if (player && !game.attemptedPlayerIds.includes(player.id)) {
       game.answeringPlayerId = player.id;
-      game.timerEndsAt = null; // таймер на паузе
+      if (game.timerEndsAt) {
+        game.pausedRemainingMs = Math.max(0, game.timerEndsAt - Date.now());
+        game.timerEndsAt = null;
+      }
     }
   }
 

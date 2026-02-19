@@ -51,7 +51,7 @@
       {#each filteredPlayers as player (player.id)}
         <li
           {...combobox.getOption(player)}
-          class="cursor-pointer flex items-center justify-between rounded-md px-4 py-3 hover:bg-primary hover:text-primary-content transition-colors data-[highlighted]:bg-primary data-[highlighted]:text-primary-content"
+          class="cursor-pointer flex items-center justify-between rounded-md px-4 py-3 hover:bg-primary hover:text-primary-content transition-colors data-highlighted:bg-primary data-highlighted:text-primary-content"
         >
           {player.name}
           {#if combobox.isSelected(player)}

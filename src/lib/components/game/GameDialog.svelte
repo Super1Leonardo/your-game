@@ -12,7 +12,10 @@
     children: Snippet;
   } = $props();
 
-  const dialog = new Dialog();
+  const dialog = new Dialog({
+    closeOnEscape: false,
+    closeOnOutsideClick: false,
+  });
 
   // принудительно задаем начальное состояние до отрисовки
   dialog.open = open;
@@ -32,23 +35,25 @@
   class="fixed inset-0 z-49 bg-black/60 backdrop-blur-sm melt-overlay"
 ></div>
 
-<dialog
+<div
   {...dialog.content}
   class="fixed left-1/2 top-1/2 z-50 w-[90vw] m-0 -translate-x-1/2 -translate-y-1/2 rounded-box bg-base-100 p-8 shadow-2xl melt-dialog {contentClass}"
   oncancel={(e) => e.preventDefault()}
+  onkeydown={(e) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+    }
+  }}
+  role="dialog"
 >
   {@render children()}
-</dialog>
+</div>
 
 <style>
   .melt-dialog {
     opacity: 0;
     scale: 0.95;
     transition: ease 200ms;
-  }
-
-  .melt-dialog::backdrop {
-    display: none; /* отключаем нативный фон браузера */
   }
 
   .melt-dialog[data-open] {
