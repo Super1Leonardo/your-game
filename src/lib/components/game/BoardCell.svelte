@@ -2,6 +2,7 @@
   import type { Question } from "$lib/types";
   import { game } from "$lib/state/gameStore.svelte";
   import { goto } from "$app/navigation";
+  import { devMode } from "$lib/state/devStore.svelte";
 
   let { question }: { question: Question } = $props();
 
@@ -28,7 +29,7 @@
          {question.isPlayed
     ? 'hidden'
     : 'bg-secondary text-secondary-content shadow-md hover:scale-[1.03] active:scale-95 cursor-pointer'}
-         {!question.isPlayed && game.devMode && isSpecial
+         {!question.isPlayed && devMode.enabled && isSpecial
     ? question.type === 'cat'
       ? 'ring-4 ring-warning ring-inset'
       : 'ring-4 ring-primary ring-inset'
@@ -39,7 +40,7 @@
 >
   {question.price}
 
-  {#if game.devMode && !question.isPlayed && isSpecial}
+  {#if devMode.enabled && !question.isPlayed && isSpecial}
     <div class="text-sm font-bold uppercase opacity-80 absolute top-1">
       {specialTranslated[question.type]}
     </div>

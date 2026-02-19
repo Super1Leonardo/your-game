@@ -15,7 +15,6 @@ const defaultState: GameState = {
   timerEndsAt: null,
   auctionState: null,
   finalState: null,
-
   devMode: false,
 };
 
@@ -37,7 +36,7 @@ export function loadGame() {
   }
 }
 
-// Автоматическое сохранение состояния при любом изменении
+// aвтоматическое сохранение состояния при любом изменении
 export function initStorePersistence() {
   if (typeof window !== "undefined") {
     $effect.root(() => {

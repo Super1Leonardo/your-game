@@ -7,11 +7,15 @@
   import { onMount } from "svelte";
   import { initKeyboardManager } from "$lib/utils/keyboardManager";
   import Header from "$lib/components/game/Header.svelte";
+  import Auction from "$lib/components/game/Auction.svelte";
+  import { endQuestion } from "$lib/utils/gameActions";
+  import { devMode } from "$lib/state/devStore.svelte";
 
   let answerInput = $state("");
   let isSpecialSetupDone = $state(false);
   let isCat = $derived(game.activeQuestion?.type === "cat");
-  let pausedRemainingMs: number | null = $state(null);
+  let isAuction = $derived(game.activeQuestion?.type === "auction");
+  let pausedRemainingMs: number | null = $state(null); // время на котором паузу поставили
 
   function pauseTimer() {
     if (game.timerEndsAt) {
@@ -46,20 +50,8 @@
     return initKeyboardManager(); // менеджер клавиатуры и отписка при уничтожении компонента
   });
 
-  function closeQuestion(msg: string) {
-    if (msg) addToast({ data: { title: msg, type: "info" } });
-    if (game.activeQuestion) game.activeQuestion.isPlayed = true;
-    // весь контекст сбрасываем
-    game.activeQuestion = null;
-    game.answeringPlayerId = null;
-    game.attemptedPlayerIds = [];
-    game.timerEndsAt = null;
-
-    goto("/game");
-  }
-
   function handleTimeUp() {
-    closeQuestion("Время вышло! Никто не ответил.");
+    endQuestion("Время вышло! Никто не ответил.");
   }
 
   function submitAnswer() {
@@ -81,7 +73,7 @@
           type: "success",
         },
       });
-      closeQuestion("");
+      endQuestion("");
     } else {
       player.score -= game.activeQuestion.price;
       if (
@@ -94,7 +86,7 @@
             type: "error",
           },
         });
-        closeQuestion("Вопрос закрыт.");
+        endQuestion("Вопрос закрыт.");
         return;
       }
       game.attemptedPlayerIds.push(player.id);
@@ -109,7 +101,7 @@
       game.answeringPlayerId = null;
 
       if (game.attemptedPlayerIds.length === game.players.length) {
-        closeQuestion("Никто не дал верного ответа.");
+        endQuestion("Никто не дал верного ответа.");
       } else {
         // возобновляем таймер для остальных
         game.timerEndsAt = Date.now() + 30000;
@@ -119,12 +111,14 @@
 </script>
 
 <div
-  class="min-h-screen bg-base-200 flex flex-col items-center justify-center p-4"
+  class="min-h-screen bg-base-200 flex flex-col items-center justify-center py-8 px-4"
 >
   <Header />
   <div class="grow w-full flex flex-col items-center justify-center">
     {#if isCat && !isSpecialSetupDone}
       <Cat onSetupComplete={() => (isSpecialSetupDone = true)} />
+    {:else if isAuction && !isSpecialSetupDone}
+      <Auction onSetupComplete={() => (isSpecialSetupDone = true)} />
     {:else if game.activeQuestion}
       <div
         class="card w-full max-w-4xl bg-base-100 shadow-2xl border-t-4 border-primary"
@@ -138,7 +132,7 @@
             {game.activeQuestion.text}
           </h2>
 
-          {#if game.devMode}
+          {#if devMode.enabled}
             <div class="flex justify-center items-stretch gap-3 mt-4 w-full">
               <div
                 class=" px-4 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
@@ -162,17 +156,6 @@
                   Возобновить
                 </button>
               {/if}
-
-              <button
-                class="btn btn-error text-lg h-auto"
-                onclick={handleTimeUp}
-              >
-                {#if !game.answeringPlayerId}
-                  Завершить время
-                {:else}
-                  Вернуться на главную
-                {/if}
-              </button>
             </div>
           {/if}
 

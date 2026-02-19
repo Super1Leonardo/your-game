@@ -3,6 +3,8 @@
   import type { Player } from "$lib/types";
   import { game } from "$lib/state/gameStore.svelte";
   import { fade } from "svelte/transition";
+  import DevModeButtons from "./DevModeButtons.svelte";
+  import { devMode } from "$lib/state/devStore.svelte";
 
   let { onSetupComplete }: { onSetupComplete: () => void } = $props();
 
@@ -12,7 +14,12 @@
   const {
     elements: { portalled, overlay, content, title, description },
     states: { open: dialogOpen },
-  } = createDialog({ defaultOpen: true, forceVisible: true });
+  } = createDialog({
+    defaultOpen: true,
+    forceVisible: true,
+    closeOnOutsideClick: false,
+    escapeBehavior: "ignore",
+  });
 
   const toOption = (player: Player) => ({ value: player, label: player.name });
   const {
@@ -108,12 +115,15 @@
       </div>
 
       <button
-        class="btn btn-primary w-full btn-lg"
+        class="btn btn-primary w-full btn-lg mb-4"
         onclick={confirmPlayer}
         disabled={!$selected}
       >
         Подтвердить выбор
       </button>
+      {#if devMode.enabled}
+        <DevModeButtons />
+      {/if}
     </div>
   </div>
 {/if}
@@ -153,6 +163,9 @@
             </button>
           {/each}
         </div>
+      {/if}
+      {#if devMode.enabled}
+        <DevModeButtons />
       {/if}
     </div>
   </div>

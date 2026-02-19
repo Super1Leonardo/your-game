@@ -40,7 +40,6 @@ export interface GameState {
   phase: GamePhase;
   players: Player[];
 
-  // табло
   round1Themes: Theme[];
   round2Themes: Theme[];
   finalQuestion: Question | null;

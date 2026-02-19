@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import { createSwitch, melt } from "@melt-ui/svelte";
 
   let { checked, onChange, label = "", textclass = "", testid = "" } = $props();
@@ -7,6 +7,7 @@
     elements: { root, input },
     states: { checked: meltChecked },
   } = createSwitch({
+    defaultChecked: checked,
     onCheckedChange: ({ next }) => {
       onChange(next);
       return next;
@@ -60,4 +61,17 @@
   :global([data-state="checked"]) .thumb {
     transform: translateX(calc(var(--w) - var(--size) - var(--padding)));
   }
-</style>
+</style> -->
+
+<script lang="ts">
+  import { devMode } from "$lib/state/devStore.svelte";
+</script>
+
+<div class="flex gap-3">
+  <p class="text-secondary">Режим разработчика</p>
+  <input
+    type="checkbox"
+    class="toggle toggle-secondary"
+    bind:checked={devMode.enabled}
+  />
+</div>

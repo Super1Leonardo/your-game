@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { devMode } from "$lib/state/devStore.svelte";
   import { game } from "$lib/state/gameStore.svelte";
 </script>
 
@@ -23,7 +24,7 @@
           Кнопка: {player.key === " " ? "Пробел" : player.key.toUpperCase()}
         </div>
 
-        {#if game.devMode}
+        {#if devMode.enabled}
           <div class="flex mt-2">
             <button
               class="btn btn-sm btn-soft btn-error text-sm rounded-r-none"

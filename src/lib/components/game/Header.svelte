@@ -1,6 +1,6 @@
 <script lang="ts">
   import { game } from "$lib/state/gameStore.svelte";
-  import Switch from "$lib/components/ui/Switch.svelte";
+  import DevModeSwitch from "$lib/components/ui/DevModeSwitch.svelte";
   import ThemeSwitcher from "../ui/ThemeSwitcher.svelte";
 
   let roundTitle = $derived.by(() => {
@@ -16,10 +16,5 @@
     {roundTitle}
   </h1>
   <ThemeSwitcher />
-  <Switch
-    testid="dev-mode-switch"
-    label="Режим разработчика"
-    checked={game.devMode}
-    onChange={(v: boolean) => (game.devMode = v)}
-  />
+  <DevModeSwitch />
 </header>
