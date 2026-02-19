@@ -10,6 +10,7 @@
   import Auction from "$lib/components/game/Auction.svelte";
   import { endQuestion } from "$lib/utils/gameActions";
   import { devMode } from "$lib/state/devStore.svelte";
+  import DevModeButtons from "$lib/components/game/DevModeButtons.svelte";
 
   let answerInput = $state("");
   let isSpecialSetupDone = $state(false);
@@ -204,6 +205,11 @@
               >
                 Ответить
               </button>
+            </div>
+          {/if}
+          {#if devMode.enabled}
+            <div class="w-1/2">
+              <DevModeButtons />
             </div>
           {/if}
         </div>

@@ -8,6 +8,10 @@
     loadGame,
     initStorePersistence,
   } from "$lib/state/gameStore.svelte";
+  import {
+    loadDevMode,
+    initDevStorePersistence,
+  } from "$lib/state/devStore.svelte";
   import { onMount } from "svelte";
   import Toaster from "$lib/components/ui/Toaster.svelte";
 
@@ -15,8 +19,11 @@
   let isInitialized = $state(false);
 
   onMount(() => {
+    // трекинг изменений
     loadGame();
-    initStorePersistence(); // трекинг изменений
+    initStorePersistence();
+    loadDevMode();
+    initDevStorePersistence();
     isInitialized = true;
   });
 

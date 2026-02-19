@@ -56,6 +56,4 @@ export interface GameState {
   // спец состояния
   auctionState: AuctionState | null;
   finalState: FinalRoundState | null;
-
-  devMode: boolean;
 }

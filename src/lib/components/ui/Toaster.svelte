@@ -1,8 +1,5 @@
-<script lang="ts" context="module">
-  import { createToaster } from "@melt-ui/svelte";
-  import { melt } from "@melt-ui/svelte";
-  import { flip } from "svelte/animate";
-  import { fly } from "svelte/transition";
+<script lang="ts" module>
+  import { Toaster } from "melt/builders";
 
   export type ToastData = {
     testid?: string;
@@ -11,7 +8,7 @@
     type: "success" | "error" | "info" | "warning";
   };
 
-  const toaster = createToaster<ToastData>({
+  const toaster = new Toaster<ToastData>({
     closeDelay: 3000,
   });
 
@@ -22,40 +19,40 @@
     warning: "bg-warning",
   };
 
-  export const {
-    elements: { content, title, description, close },
-    states: { toasts },
-    actions: { portal },
-  } = toaster;
+  export const addToast = toaster.addToast;
+</script>
 
-  export const addToast = toaster.helpers.addToast;
+<script lang="ts">
+  import { flip } from "svelte/animate";
+  import { fly } from "svelte/transition";
 </script>
 
 <div
-  class="fixed right-0 top-0 z-50 m-4 flex flex-col items-end gap-2 md:bottom-0 md:top-auto"
-  use:portal
+  {...toaster.root}
+  class="fixed z-50 m-4 flex flex-col items-end bottom-0! right-0! left-auto! top-auto! gap-2 md:bottom-0 md:top-auto overflow-x-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 >
-  {#each $toasts as { id, data } (id)}
+  {#each toaster.toasts as toast (toast.id)}
     <div
-      data-test-id={data.testid}
-      use:melt={$content(id)}
+      {...toast.content}
+      data-test-id={toast.data.testid}
       animate:flip={{ duration: 500 }}
-      in:fly={{ duration: 150, x: "100%" }}
-      out:fly={{ duration: 150, x: "100%" }}
-      class="rounded-lg {colors[data.type]} text-white shadow-md"
+      in:fly={{ duration: 250, y: 50 }}
+      out:fly={{ duration: -250, y: 50 }}
+      class="rounded-lg {colors[toast.data.type]} text-white shadow-md"
     >
       <div
         class="relative flex w-84 max-w-[calc(100vw-2rem)] items-center justify-center gap-4 p-5"
       >
         <div>
           <h3
-            use:melt={$title(id)}
+            {...toast.title}
             class="flex items-center gap-3 text-lg font-semibold"
           >
-            {data.title}
+            {toast.data.title}
           </h3>
-          <div use:melt={$description(id)}>
-            {data.description}
+
+          <div {...toast.description}>
+            {toast.data.description}
           </div>
         </div>
       </div>

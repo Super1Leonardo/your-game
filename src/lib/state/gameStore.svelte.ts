@@ -15,7 +15,6 @@ const defaultState: GameState = {
   timerEndsAt: null,
   auctionState: null,
   finalState: null,
-  devMode: false,
 };
 
 export const game = $state<GameState>(
