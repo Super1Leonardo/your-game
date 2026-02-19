@@ -122,7 +122,7 @@
   <h2 class="text-4xl font-extrabold">Аукцион!</h2>
   <div class="flex flex-col gap-2 bg-base-200 p-4 rounded-xl w-full">
     <p class="text-lg">
-      Номинал: <strong class="text-secondary"
+      Номинал: <strong data-test-id="min-bet" class="text-secondary"
         >{game.activeQuestion?.price}</strong
       >
     </p>
@@ -144,11 +144,17 @@
     Ход игрока
   </div>
 
-  <h3 class="text-3xl font-bold text-secondary">{activePlayer?.name}</h3>
+  <h3
+    data-test-id="auction-active-player"
+    class="text-3xl font-bold text-secondary"
+  >
+    {activePlayer?.name}
+  </h3>
   <p class="text-xl">На счете: <strong>{activePlayerScore}</strong></p>
 
   <div class="flex gap-4 h-12 w-full justify-center mt-2">
     <input
+      data-test-id="auction-input"
       type="number"
       class="input input-bordered input-primary h-full px-5 py-2 border-2 text-center text-xl font-bold"
       placeholder="Сумма"
@@ -159,6 +165,7 @@
         placeBet(betInput, false)}
     />
     <button
+      data-test-id="auction-confirm"
       class="btn btn-primary h-full text-lg"
       onclick={() => typeof betInput === "number" && placeBet(betInput, false)}
     >
@@ -167,7 +174,11 @@
   </div>
 
   <div class="flex gap-4 w-full mt-4">
-    <button class="btn btn-outline btn-error flex-1 text-lg" onclick={fold}>
+    <button
+      data-test-id="auction-skip"
+      class="btn btn-outline btn-error flex-1 text-lg"
+      onclick={fold}
+    >
       Пас
     </button>
     <button

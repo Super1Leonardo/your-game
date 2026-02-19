@@ -194,7 +194,10 @@
             <div
               class="w-full max-w-md flex flex-col gap-4 animate-in fade-in zoom-in duration-300"
             >
-              <div class=" justify-center text-xl font-bold">
+              <div
+                data-test-id="active-player"
+                class=" justify-center text-xl font-bold"
+              >
                 Отвечает: {answeringPlayer?.name}
               </div>
               <input
