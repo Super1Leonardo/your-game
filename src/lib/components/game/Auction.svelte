@@ -13,7 +13,7 @@
     Math.max(0, activePlayerIds.indexOf(game.currentPlayerId || ""))
   );
 
-  let highestBidderId = $state<string | null>(null);
+  let highestBetterId = $state<string | null>(null);
   let currentBet = $state(game.activeQuestion?.price || 100);
   let isAllInMode = $state(false);
   let betInput = $state<number | "">("");
@@ -23,17 +23,17 @@
   );
   let activePlayerScore = $derived(activePlayer?.score || 0);
   let requiredMin = $derived(
-    highestBidderId === null ? currentBet : currentBet + 1
+    highestBetterId === null ? currentBet : currentBet + 1
   );
 
   let highestBidderName = $derived(
-    game.players.find((p) => p.id === highestBidderId)?.name || ""
+    game.players.find((p) => p.id === highestBetterId)?.name || ""
   );
 
   function placeBet(amount: number, isExplicitAllIn: boolean) {
     if (!activePlayer) return;
 
-    // Автоматически засчитываем ручной ввод всех баллов как ва-банк
+    // fвтоматически засчитываем ручной ввод всех баллов как вабанк
     const isAllIn = isExplicitAllIn || amount === activePlayerScore;
 
     if (isAllInMode && !isAllIn) {
@@ -41,6 +41,7 @@
         data: {
           title: "Можно перебить только ставкой Ва-банк!",
           type: "error",
+          testid: "allin-notification",
         },
       });
       return;
@@ -60,7 +61,7 @@
       return;
     }
 
-    highestBidderId = activePlayer.id;
+    highestBetterId = activePlayer.id;
     currentBet = amount;
     if (isAllIn) isAllInMode = true;
 
@@ -69,7 +70,7 @@
 
   function nextTurn() {
     // остался один чел и он делает ставку
-    if (activePlayerIds.length === 1 && highestBidderId !== null) {
+    if (activePlayerIds.length === 1 && highestBetterId !== null) {
       finishAuction();
       return;
     }
@@ -78,7 +79,7 @@
     betInput = "";
 
     // если ход у текущего лидера значит остальные скипнули
-    if (activePlayerIds[currentPlayerIndex] === highestBidderId) {
+    if (activePlayerIds[currentPlayerIndex] === highestBetterId) {
       finishAuction();
     }
   }
@@ -99,18 +100,18 @@
       if (game.activeQuestion) game.activeQuestion.isPlayed = true;
       game.activeQuestion = null;
       goto("/game");
-    } else if (activePlayerIds.length === 1 && highestBidderId !== null) {
+    } else if (activePlayerIds.length === 1 && highestBetterId !== null) {
       finishAuction();
-    } else if (activePlayerIds[currentPlayerIndex] === highestBidderId) {
+    } else if (activePlayerIds[currentPlayerIndex] === highestBetterId) {
       finishAuction();
     }
   }
 
   function finishAuction() {
-    if (game.activeQuestion && highestBidderId) {
+    if (game.activeQuestion && highestBetterId) {
       game.activeQuestion.price = currentBet;
-      game.answeringPlayerId = highestBidderId;
-      game.currentPlayerId = highestBidderId;
+      game.answeringPlayerId = highestBetterId;
+      game.currentPlayerId = highestBetterId;
       onSetupComplete();
     }
   }
@@ -126,13 +127,14 @@
         >{game.activeQuestion?.price}</strong
       >
     </p>
-    {#if highestBidderId}
+    {#if highestBetterId}
       <p class="text-xl">
         Ставка: <strong>{currentBet}</strong> ({highestBidderName})
       </p>
     {/if}
     {#if isAllInMode}
       <div
+        data-test-id="allin-badge"
         class="badge badge-error badge-lg mx-auto font-bold animate-pulse mt-2"
       >
         Режим Ва-банк!
@@ -165,7 +167,7 @@
         placeBet(betInput, false)}
     />
     <button
-      data-test-id="auction-confirm"
+      data-test-id="auction-confirm-btn"
       class="btn btn-primary h-full text-lg"
       onclick={() => typeof betInput === "number" && placeBet(betInput, false)}
     >
@@ -175,13 +177,14 @@
 
   <div class="flex gap-4 w-full mt-4">
     <button
-      data-test-id="auction-skip"
+      data-test-id="auction-skip-btn"
       class="btn btn-outline btn-error flex-1 text-lg"
       onclick={fold}
     >
       Пас
     </button>
     <button
+      data-test-id="allin-btn"
       class="btn btn-success btn-outline flex-1 text-lg"
       onclick={() => placeBet(activePlayerScore, true)}
     >
