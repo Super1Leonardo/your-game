@@ -20,7 +20,7 @@ test.describe("Auction tests", () => {
     await page.locator("button", { hasText: "Аукцион" }).first().click();
     await expect(page).toHaveURL("/question");
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 1"
+      "Игрок 1",
     );
     const input = page.getByTestId("auction-input");
     const confirm = page.getByTestId("auction-confirm-btn");
@@ -28,31 +28,31 @@ test.describe("Auction tests", () => {
     await input.fill(bet);
     await confirm.click();
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 2"
+      "Игрок 2",
     );
     await page.pause();
     await page.getByTestId("auction-skip-btn").click();
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 3"
+      "Игрок 3",
     );
     await input.fill(`${Number(bet) + 100}`);
     await confirm.click();
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 1"
+      "Игрок 1",
     );
     await page.getByTestId("auction-skip-btn").click();
     await expect(page.getByTestId("active-player")).toHaveText(
-      "Отвечает: Игрок 3"
+      "Отвечает: Игрок 3",
     );
     const answer = await page.getByTestId("question-answer").innerHTML();
     await page.getByTestId("question-input").fill(answer);
     await page.getByTestId("question-submit").click();
     await expect(page).toHaveURL("/game");
     await expect(
-      page.getByTestId(`success-answer-${Number(bet) + 100}`)
+      page.getByTestId(`success-answer-${Number(bet) + 100}`),
     ).toBeVisible();
     await expect(page.getByTestId("player-score").nth(2)).toHaveText(
-      `${Number(bet) + 1000}`
+      `${Number(bet) + 1000}`,
     );
   });
   test("2. All-in mode", async ({ page }) => {
@@ -60,11 +60,11 @@ test.describe("Auction tests", () => {
     await page.locator("button", { hasText: "Аукцион" }).first().click();
     await expect(page).toHaveURL("/question");
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 1"
+      "Игрок 1",
     );
     await page.getByTestId("allin-btn").click();
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 2"
+      "Игрок 2",
     );
     await expect(page.getByTestId("allin-badge")).toBeVisible();
     const input = page.getByTestId("auction-input");
@@ -76,11 +76,11 @@ test.describe("Auction tests", () => {
     await input.fill("900");
     await confirm.click();
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 3"
+      "Игрок 3",
     );
     await skip.click();
     await expect(page.getByTestId("auction-active-player")).toHaveText(
-      "Игрок 1"
+      "Игрок 1",
     );
     await skip.click();
     const answer = await page.getByTestId("question-answer").innerHTML();
@@ -89,5 +89,56 @@ test.describe("Auction tests", () => {
     await expect(page).toHaveURL("/game");
     await expect(page.getByTestId(`success-answer-900`)).toBeVisible();
     await expect(page.getByTestId("player-score").nth(1)).toHaveText("1800");
+  });
+  test("3. Invalid bets", async ({ page }) => {
+    await page.locator("button", { hasText: "Аукцион" }).first().click();
+    await expect(page).toHaveURL("/question");
+    await expect(page.getByTestId("auction-active-player")).toHaveText(
+      "Игрок 1",
+    );
+    const input = page.getByTestId("auction-input");
+    const confirm = page.getByTestId("auction-confirm-btn");
+    const minBet = await page.getByTestId("min-bet").innerText();
+    await input.fill(`${Number(minBet) - 50}`); // меньше минимальной
+    await confirm.click();
+    await expect(page.getByText(`Минимальная ставка: ${minBet}`)).toBeVisible();
+
+    await input.fill("50000"); // больше чем есть на счету
+    await confirm.click();
+    await expect(page.getByText("У вас нет столько баллов!")).toBeVisible();
+    await expect(page.getByTestId("auction-active-player")).toHaveText(
+      "Игрок 1",
+    );
+  });
+
+  test("4. Wrong answer logic", async ({ page }) => {
+    await page.locator("button", { hasText: "Аукцион" }).first().click();
+    await expect(page).toHaveURL("/question");
+
+    const input = page.getByTestId("auction-input");
+    const confirm = page.getByTestId("auction-confirm-btn");
+    const betText = await page.getByTestId("min-bet").innerText();
+    const bet = Number(betText);
+
+    await input.fill(`${bet}`);
+    await confirm.click();
+
+    await page.getByTestId("auction-skip-btn").click();
+    await page.getByTestId("auction-skip-btn").click();
+    await expect(page.getByTestId("active-player")).toHaveText(
+      "Отвечает: Игрок 1",
+    );
+
+    // Игрок 1 дает неверный ответ
+    await page.getByTestId("question-input").fill("неверный ответ");
+    await page.getByTestId("question-submit").click();
+
+    await expect(page).toHaveURL("/game");
+    await expect(page.getByTestId(`wrong-answer-${bet}`)).toBeVisible();
+
+    const expectedScore = 900 - bet;
+    await expect(page.getByTestId("player-score").first()).toHaveText(
+      `${expectedScore}`,
+    );
   });
 });

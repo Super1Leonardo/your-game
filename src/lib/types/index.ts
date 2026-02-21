@@ -4,7 +4,7 @@ export type QuestionType = "normal" | "cat" | "auction" | "final";
 export interface Player {
   id: string;
   name: string;
-  key: string; // клавиша ответа
+  key: string;
   score: number;
 }
 

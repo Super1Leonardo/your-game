@@ -2,5 +2,8 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "cSpell.words": ["daysi", "textclass"]
+  "cSpell.words": ["daysi", "textclass"],
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  }
 }

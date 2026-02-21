@@ -9,16 +9,28 @@ test.describe("Question tests", () => {
     await page.getByTestId("setup-continue-button").click();
 
     await expect(page).toHaveURL("/game");
+    await page.evaluate(() => {
+      // защита чтобы первый вопрос был дефолтным
+      const stateRaw = localStorage.getItem("igra-state");
+      if (stateRaw) {
+        const state = JSON.parse(stateRaw);
+        if (state.round1Themes[0] && state.round1Themes[0].questions[0]) {
+          state.round1Themes[0].questions[0].type = "normal";
+          localStorage.setItem("igra-state", JSON.stringify(state));
+        }
+      }
+    });
+    await page.reload();
     await page
       .getByRole("button", { name: "100", exact: true })
       .first()
       .click();
     await expect(page).toHaveURL("/question");
+    await expect(
+      page.getByText("Нажмите свою клавишу для ответа..."),
+    ).toBeVisible();
   });
   test("1. Right answer logic", async ({ page }) => {
-    await expect(
-      page.getByText("Нажмите свою клавишу для ответа...")
-    ).toBeVisible();
     await page.keyboard.press("a");
     await expect(page.getByText("Отвечает: Игрок 1")).toBeVisible();
     await page.getByTestId("question-input").fill("HTML");
@@ -28,9 +40,6 @@ test.describe("Question tests", () => {
   });
 
   test("2. Wrong answer logic", async ({ page }) => {
-    await expect(
-      page.getByText("Нажмите свою клавишу для ответа...")
-    ).toBeVisible();
     await page.keyboard.press("a");
     await expect(page.getByText("Отвечает: Игрок 1")).toBeVisible();
     await page.pause();
@@ -48,9 +57,6 @@ test.describe("Question tests", () => {
   });
 
   test("3. Time out logic", async ({ page }) => {
-    await expect(
-      page.getByText("Нажмите свою клавишу для ответа...")
-    ).toBeVisible();
     await page.clock.install();
     await page.clock.fastForward(31000);
     await expect(page).toHaveURL("/game", { timeout: 32000 });

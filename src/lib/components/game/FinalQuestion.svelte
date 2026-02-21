@@ -8,7 +8,7 @@
 
   // Индекс вычисляется из глобального стора
   let currentPlayerIndex = $derived(
-    game.finalState ? game.finalState.completedPlayerIds.length : 0
+    game.finalState ? game.finalState.completedPlayerIds.length : 0,
   );
   let currentPlayer = $derived(finalPlayers[currentPlayerIndex]);
 
@@ -64,15 +64,17 @@
   <div class="card-body items-center text-center p-10">
     {#if !isReady && currentPlayer}
       <h3 class="text-4xl mb-4">
-        Очередь игрока: <span class="font-extrabold text-secondary"
+        Очередь игрока <span class="font-extrabold text-secondary"
           >{currentPlayer.name}</span
         >
       </h3>
       <p class="mb-8 opacity-70 text-lg">
         Приготовьтесь. На ответ у вас будет ровно 60 секунд.
       </p>
-      <button class="btn btn-secondary btn-lg px-12" onclick={startTurn}
-        >Я готов(а)</button
+      <button
+        data-test-id="final-ready-btn"
+        class="btn btn-secondary btn-lg px-12"
+        onclick={startTurn}>Я готов(а)</button
       >
     {:else if isReady && currentPlayer}
       <div
@@ -112,12 +114,17 @@
 
         <input
           type="text"
+          data-test-id="final-answer-input"
           bind:value={answerInput}
           class="input border-2 input-secondary input-lg w-full text-center text-2xl mb-6"
           placeholder="Ваш ответ"
           onkeydown={(e) => e.key === "Enter" && submitAnswer()}
         />
-        <button class="btn btn-success btn-lg w-full" onclick={submitAnswer}>
+        <button
+          data-test-id="final-answer-submit"
+          class="btn btn-success btn-lg w-full"
+          onclick={submitAnswer}
+        >
           Сохранить ответ
         </button>
       </div>

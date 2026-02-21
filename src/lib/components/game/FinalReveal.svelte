@@ -89,15 +89,18 @@
         <button
           class="btn btn-primary btn-lg w-full max-w-sm"
           onclick={nextReveal}
+          data-test-id="reveal-next-btn"
           >Показать ответ игрока
         </button>
       {:else if !correctRevealed}
         <button
+          data-test-id="reveal-correct-btn"
           class="btn btn-secondary -mt-2 btn-lg w-full max-w-sm"
           onclick={nextReveal}>Показать правильный ответ</button
         >
       {:else}
         <button
+          data-test-id="finish-game-btn"
           class="btn btn-primary btn-lg w-full max-w-sm"
           onclick={finishGame}>К результатам игры!</button
         >
