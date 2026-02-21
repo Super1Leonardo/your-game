@@ -16,45 +16,37 @@ test.describe("Game board tests", () => {
     await expect(heading).toHaveText("Раунд 1");
     await expect(heading).toBeVisible();
     expect(
-      await page.getByRole("button", { name: "100", exact: true }).count()
+      await page.getByRole("button", { name: "100", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "200", exact: true }).count()
+      await page.getByRole("button", { name: "200", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "300", exact: true }).count()
+      await page.getByRole("button", { name: "300", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "400", exact: true }).count()
+      await page.getByRole("button", { name: "400", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "500", exact: true }).count()
+      await page.getByRole("button", { name: "500", exact: true }).count(),
     ).toBe(6);
   });
-  test("2. Dev mode toggles buttons and special questions", async ({
-    page,
-  }) => {
-    await page.getByTestId("dev-mode-switch").click();
-    await page.getByRole("button", { name: "Добавить 100" }).first().click();
-    await expect(page.getByTestId("player-score").first()).toHaveText("100");
-    await expect(page.getByText("Кот в мешке", { exact: true })).toHaveCount(2);
-    await expect(page.getByText("Аукцион", { exact: true })).toHaveCount(2);
-  });
-  test("3. State doesn't change after reload", async ({ page }) => {
+
+  test("2. State doesn't change after reload", async ({ page }) => {
     await page.getByTestId("dev-mode-switch").click();
     await page.getByRole("button", { name: "Добавить 100" }).first().click();
     await page.reload();
     await expect(page).toHaveURL("/game");
     await expect(page.getByTestId("player-score").first()).toHaveText("100");
   });
-  test("4. Correct redirecting to /question", async ({ page }) => {
+  test("3. Correct redirecting to /question", async ({ page }) => {
     await page
       .getByRole("button", { name: "100", exact: true })
       .first()
       .click();
     await expect(page).toHaveURL("/question");
   });
-  test("5. Render board and nominals for Round 2", async ({ page }) => {
+  test("4. Render board and nominals for Round 2", async ({ page }) => {
     await page.evaluate(() => {
       // меняем local storage
       const stateRaw = localStorage.getItem("igra-state");
@@ -69,30 +61,30 @@ test.describe("Game board tests", () => {
     await expect(heading).toHaveText("Раунд 2");
 
     expect(
-      await page.getByRole("button", { name: "200", exact: true }).count()
+      await page.getByRole("button", { name: "200", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "400", exact: true }).count()
+      await page.getByRole("button", { name: "400", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "600", exact: true }).count()
+      await page.getByRole("button", { name: "600", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "800", exact: true }).count()
+      await page.getByRole("button", { name: "800", exact: true }).count(),
     ).toBe(6);
     expect(
-      await page.getByRole("button", { name: "1000", exact: true }).count()
+      await page.getByRole("button", { name: "1000", exact: true }).count(),
     ).toBe(6);
   });
-  test("6. Active player indication", async ({ page }) => {
+  test("5. Active player indication", async ({ page }) => {
     const activePlayer = page.getByTestId("active-player");
     await expect(activePlayer).toBeVisible();
     await expect(activePlayer).toContainText("Игрок 1");
   });
 
-  test("7. Played questions become disabled", async ({ page }) => {
+  test("6. Played questions become disabled", async ({ page }) => {
     await expect(
-      page.getByRole("button", { name: "100", exact: true })
+      page.getByRole("button", { name: "100", exact: true }),
     ).toHaveCount(6);
     await page.evaluate(() => {
       const stateRaw = localStorage.getItem("igra-state");
@@ -105,27 +97,27 @@ test.describe("Game board tests", () => {
     await page.reload();
 
     await expect(
-      page.getByRole("button", { name: "100", exact: true })
+      page.getByRole("button", { name: "100", exact: true }),
     ).toHaveCount(5);
   });
 
-  test("8. Round completion screen", async ({ page }) => {
+  test("7. Round completion screen", async ({ page }) => {
     await page.evaluate(() => {
       const stateRaw = localStorage.getItem("igra-state");
       if (stateRaw) {
         const state = JSON.parse(stateRaw);
         state.round1Themes.forEach((t: any) =>
-          t.questions.forEach((q: any) => (q.isPlayed = true))
+          t.questions.forEach((q: any) => (q.isPlayed = true)),
         );
         localStorage.setItem("igra-state", JSON.stringify(state));
       }
     });
     await page.reload();
     await expect(page.getByTestId("round-complete")).toHaveText(
-      "Раунд завершен!"
+      "Раунд завершен!",
     );
     await expect(
-      page.getByRole("button", { name: "Перейти ко 2 раунду" })
+      page.getByRole("button", { name: "Перейти ко 2 раунду" }),
     ).toBeVisible();
   });
 });

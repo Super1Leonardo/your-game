@@ -42,7 +42,6 @@ test.describe("Question tests", () => {
   test("2. Wrong answer logic", async ({ page }) => {
     await page.keyboard.press("a");
     await expect(page.getByText("Отвечает: Игрок 1")).toBeVisible();
-    await page.pause();
     await page.getByTestId("question-input").fill("AAAAAAAA");
     await page.getByTestId("question-submit").click();
     await page.keyboard.press(" ");

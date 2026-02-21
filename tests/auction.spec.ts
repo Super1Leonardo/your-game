@@ -30,7 +30,6 @@ test.describe("Auction tests", () => {
     await expect(page.getByTestId("auction-active-player")).toHaveText(
       "Игрок 2",
     );
-    await page.pause();
     await page.getByTestId("auction-skip-btn").click();
     await expect(page.getByTestId("auction-active-player")).toHaveText(
       "Игрок 3",
@@ -57,7 +56,7 @@ test.describe("Auction tests", () => {
   });
   test("2. All-in mode", async ({ page }) => {
     await page.getByRole("button", { name: "Убрать 100" }).first().click();
-    await page.locator("button", { hasText: "Аукцион" }).first().click();
+    await page.getByRole("button", { name: "Аукцион" }).first().click();
     await expect(page).toHaveURL("/question");
     await expect(page.getByTestId("auction-active-player")).toHaveText(
       "Игрок 1",
