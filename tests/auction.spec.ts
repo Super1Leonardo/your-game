@@ -41,7 +41,7 @@ test.describe("Auction tests", () => {
     );
     await page.getByTestId("auction-skip-btn").click();
     await expect(page.getByTestId("active-player")).toHaveText(
-      "Отвечает: Игрок 3",
+      "Отвечает Игрок 3",
     );
     const answer = await page.getByTestId("question-answer").innerHTML();
     await page.getByTestId("question-input").fill(answer);
@@ -125,7 +125,7 @@ test.describe("Auction tests", () => {
     await page.getByTestId("auction-skip-btn").click();
     await page.getByTestId("auction-skip-btn").click();
     await expect(page.getByTestId("active-player")).toHaveText(
-      "Отвечает: Игрок 1",
+      "Отвечает Игрок 1",
     );
 
     // игрок 1 дает неверный ответ

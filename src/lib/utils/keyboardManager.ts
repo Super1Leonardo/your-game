@@ -1,4 +1,5 @@
 import { game } from "$lib/state/gameStore.svelte";
+import { pauseGameTimer } from "./timer";
 
 export function initKeyboardManager() {
   const ru_en_map: Record<string, string> = {
@@ -53,16 +54,13 @@ export function initKeyboardManager() {
     const rawKey = e.key.toLowerCase();
     const normalizedKey = ru_en_map[rawKey] || rawKey;
     const player = game.players.find(
-      (p) => p.key.toLowerCase() === normalizedKey
+      (p) => p.key.toLowerCase() === normalizedKey,
     );
 
     // игрок нажал кнопку и не ошибся в вопросе
     if (player && !game.attemptedPlayerIds.includes(player.id)) {
       game.answeringPlayerId = player.id;
-      if (game.timerEndsAt) {
-        game.pausedRemainingMs = Math.max(0, game.timerEndsAt - Date.now());
-        game.timerEndsAt = null;
-      }
+      pauseGameTimer();
     }
   }
 

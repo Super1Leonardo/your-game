@@ -21,7 +21,7 @@ test.describe("Cat tests", () => {
     await page.getByTestId("cat-to-bet-button").click();
     await page.getByTestId("cat-bet-500").click();
     await expect(page.getByTestId("active-player")).toHaveText(
-      "Отвечает: Игрок 2",
+      "Отвечает Игрок 2",
     );
     const correctAnswer = await page.getByTestId("question-answer").innerText();
     const input = page.getByTestId("question-input");
@@ -60,7 +60,7 @@ test.describe("Cat tests", () => {
     await page.getByTestId("cat-to-bet-button").click();
     await page.getByTestId("cat-bet-500").click();
     await expect(page.getByTestId("active-player")).toHaveText(
-      "Отвечает: Игрок 2",
+      "Отвечает Игрок 2",
     );
 
     // Игрок 2 дает неверный ответ

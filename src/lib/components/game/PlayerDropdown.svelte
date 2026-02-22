@@ -31,7 +31,7 @@
     if (!combobox.touched) return players;
     const normalizedInput = combobox.inputValue.trim().toLowerCase();
     return players.filter((p) =>
-      p.name.toLowerCase().includes(normalizedInput)
+      p.name.toLowerCase().includes(normalizedInput),
     );
   });
 </script>
@@ -39,6 +39,7 @@
 <div class="relative w-full">
   <input
     {...combobox.input}
+    id="cat-input"
     class="input input-bordered border-2 input-primary w-full"
     placeholder="Начните вводить имя..."
   />

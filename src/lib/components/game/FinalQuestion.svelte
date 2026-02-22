@@ -3,6 +3,7 @@
   import { game } from "$lib/state/gameStore.svelte";
   import Timer from "./Timer.svelte";
   import { devMode } from "$lib/state/devStore.svelte";
+  import { pauseGameTimer, resumeGameTimer } from "$lib/utils/timer";
 
   let { finalPlayers }: { finalPlayers: Player[] } = $props();
 
@@ -29,17 +30,11 @@
   }
 
   function pauseTimer() {
-    if (game.timerEndsAt) {
-      pausedRemainingMs = Math.max(0, game.timerEndsAt - Date.now());
-      game.timerEndsAt = null;
-    }
+    pauseGameTimer();
   }
 
   function resumeTimer() {
-    if (pausedRemainingMs !== null) {
-      game.timerEndsAt = Date.now() + pausedRemainingMs;
-      pausedRemainingMs = null;
-    }
+    resumeGameTimer();
   }
 
   function submitAnswer() {

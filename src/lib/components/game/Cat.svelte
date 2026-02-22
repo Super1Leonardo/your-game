@@ -3,7 +3,7 @@
   import { game } from "$lib/state/gameStore.svelte";
   import DevModeButtons from "./DevModeButtons.svelte";
   import { devMode } from "$lib/state/devStore.svelte";
-  import PlayerCombobox from "./PlayerDropdown.svelte"; // Исправлен импорт
+  import PlayerCombobox from "./PlayerDropdown.svelte";
   import GameDialog from "./GameDialog.svelte";
 
   let { onSetupComplete }: { onSetupComplete: () => void } = $props();
@@ -15,7 +15,7 @@
   let dialogOpen = $state(true);
 
   let otherPlayers = $derived(
-    game.players.filter((p) => p.id !== game.currentPlayerId)
+    game.players.filter((p) => p.id !== game.currentPlayerId),
   );
 
   function confirmPlayer() {
@@ -35,7 +35,7 @@
   }
 
   let availableBets = $derived(
-    game.phase === "round1" ? [100, 500] : [200, 1000]
+    game.phase === "round1" ? [100, 500] : [200, 1000],
   );
 </script>
 
@@ -45,7 +45,7 @@
     <p class="text-base-content/70 mb-6">Кому передадим этого кота?</p>
 
     <div class="flex flex-col gap-2 mb-8">
-      <label class="text-sm font-semibold">Игрок:</label>
+      <label for="cat-input" class="text-sm font-semibold">Игрок:</label>
       <PlayerCombobox
         players={otherPlayers}
         bind:selectedPlayer={tempSelectedPlayer}

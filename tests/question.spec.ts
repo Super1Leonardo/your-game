@@ -32,8 +32,11 @@ test.describe("Question tests", () => {
   });
   test("1. Right answer logic", async ({ page }) => {
     await page.keyboard.press("a");
-    await expect(page.getByText("Отвечает: Игрок 1")).toBeVisible();
-    await page.getByTestId("question-input").fill("HTML");
+    await page.getByTestId("dev-mode-switch").click();
+    await expect(page.getByText("Отвечает Игрок 1")).toBeVisible();
+    await page
+      .getByTestId("question-input")
+      .fill(await page.getByTestId("question-answer").innerHTML());
     await page.getByTestId("question-submit").click();
     await expect(page).toHaveURL("/game");
     await expect(page.getByTestId("player-score").first()).toHaveText("100");
@@ -41,11 +44,12 @@ test.describe("Question tests", () => {
 
   test("2. Wrong answer logic", async ({ page }) => {
     await page.keyboard.press("a");
-    await expect(page.getByText("Отвечает: Игрок 1")).toBeVisible();
+    await expect(page.getByText("Отвечает Игрок 1")).toBeVisible();
     await page.getByTestId("question-input").fill("AAAAAAAA");
     await page.getByTestId("question-submit").click();
     await page.keyboard.press(" ");
-    await expect(page.getByText("Отвечает: Игрок 2")).toBeVisible();
+    await page.pause();
+    await expect(page.getByText("Отвечает Игрок 2")).toBeVisible();
     await page.getByTestId("question-input").fill("HTML");
     await page.getByTestId("question-submit").click();
     await expect(page).toHaveURL("/game");
