@@ -3,7 +3,7 @@
   import { game } from "$lib/state/gameStore.svelte";
 </script>
 
-<div class="flex w-full max-w-6xl justify-center gap-6">
+<div class="flex w-full justify-center gap-6">
   {#each game.players as player}
     {@const isCurrent = game.currentPlayerId === player.id}
     <div

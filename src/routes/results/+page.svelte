@@ -5,7 +5,7 @@
   import { onMount } from "svelte";
 
   let sortedPlayers = $derived(
-    [...game.players].sort((a, b) => b.score - a.score) // копия чтобы не мутировать стор
+    [...game.players].sort((a, b) => b.score - a.score), // копия чтобы не менять стор
   );
 
   let winner = $derived(sortedPlayers[0]); // первый по убыванию

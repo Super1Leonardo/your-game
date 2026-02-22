@@ -128,7 +128,7 @@ test.describe("Auction tests", () => {
       "Отвечает: Игрок 1",
     );
 
-    // Игрок 1 дает неверный ответ
+    // игрок 1 дает неверный ответ
     await page.getByTestId("question-input").fill("неверный ответ");
     await page.getByTestId("question-submit").click();
 

@@ -11,6 +11,7 @@
   import { endQuestion } from "$lib/utils/gameActions";
   import { devMode } from "$lib/state/devStore.svelte";
   import DevModeButtons from "$lib/components/game/DevModeButtons.svelte";
+  import { checkAnswer } from "$lib/utils/answerChecker";
 
   let answerInput = $state("");
   let isSpecialSetupDone = $state(false);
@@ -60,9 +61,12 @@
     const player = game.players.find((p) => p.id === game.answeringPlayerId);
     if (!player) return;
 
-    const isCorrect =
-      answerInput.trim().toLowerCase() ===
-      game.activeQuestion.answer.trim().toLowerCase();
+    const isCorrect = checkAnswer(
+      answerInput,
+      game.activeQuestion.answer,
+      1,
+      2,
+    );
 
     if (isCorrect) {
       player.score += game.activeQuestion.price;
@@ -175,7 +179,7 @@
                 {#each game.players as player}
                   <div
                     class="badge badge-outline badge-lg {game.attemptedPlayerIds.includes(
-                      player.id
+                      player.id,
                     )
                       ? 'opacity-30 line-through'
                       : ''}"
@@ -189,7 +193,7 @@
             </div>
           {:else}
             {@const answeringPlayer = game.players.find(
-              (p) => p.id === game.answeringPlayerId
+              (p) => p.id === game.answeringPlayerId,
             )}
             <div
               class="w-full max-w-md flex flex-col gap-4 animate-in fade-in zoom-in duration-300"

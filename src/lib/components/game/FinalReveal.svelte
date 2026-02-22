@@ -2,6 +2,7 @@
   import type { Player } from "$lib/types";
   import { game } from "$lib/state/gameStore.svelte";
   import { goto } from "$app/navigation";
+  import { checkAnswer } from "$lib/utils/answerChecker";
 
   let { finalPlayers }: { finalPlayers: Player[] } = $props();
 
@@ -17,8 +18,7 @@
       const ans = game.finalState?.answers[p.id] || "";
       const correctAns = game.finalQuestion?.answer || "";
 
-      const isCorrect =
-        ans.trim().toLowerCase() === correctAns.trim().toLowerCase(); // проверка
+      const isCorrect = checkAnswer(ans, correctAns, 1, 2);
 
       if (isCorrect) {
         p.score += bet;
