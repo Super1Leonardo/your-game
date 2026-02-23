@@ -6,6 +6,7 @@ export interface Player {
   name: string;
   key: string;
   score: number;
+  avatar?: string;
 }
 
 export interface Question {

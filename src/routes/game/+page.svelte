@@ -35,7 +35,7 @@
 </script>
 
 <div
-  class="min-h-screen bg-base-200 flex flex-col items-center py-8 px-4 gap-7"
+  class="min-h-screen bg-base-200 flex flex-col items-center pt-4 px-4 gap-7"
 >
   <Header />
 
@@ -51,7 +51,7 @@
       </button>
     </div>
   {:else}
-    <div class="grow w-full max-w-6xl flex flex-col justify-center">
+    <div class="grow w-full -mt-2 max-w-6xl flex flex-col justify-center">
       <Board {themes} />
     </div>
   {/if}

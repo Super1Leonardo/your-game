@@ -13,7 +13,24 @@
         ? 'border-primary scale-105 shadow-primary/50'
         : 'border-transparent'}"
     >
-      <div class="card-body items-center text-center p-4">
+      <div class="card-body items-center text-center p-2">
+        <div class="avatar {player.avatar ? '' : 'placeholder'}">
+          <div
+            class="w-16 h-16 rounded-full bg-neutral text-neutral-content flex justify-center items-center"
+          >
+            {#if player.avatar}
+              <img
+                src={player.avatar}
+                alt="Аватар {player.name}"
+                class="object-cover"
+              />
+            {:else}
+              <span class="text-2xl font-bold"
+                >{player.name.charAt(0).toUpperCase()}</span
+              >
+            {/if}
+          </div>
+        </div>
         <h2 class="card-title text-2xl">
           {player.name}
         </h2>

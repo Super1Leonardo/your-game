@@ -6,6 +6,7 @@
   import { prepareRound, type RawCatQuestion } from "$lib/utils/boardGenerator";
   import { fade, slide } from "svelte/transition"; 
   import ThemeSwitcher from "$lib/components/ui/ThemeSwitcher.svelte";
+  import Upload from "$lib/components/ui/Upload.svelte";
 
   let isDropdownOpen = $state(false);
 
@@ -20,9 +21,9 @@
 
   let playerCount = $state(3);
   let playersInput = $state([
-    { id: crypto.randomUUID(), name: "", ...AVAILABLE_KEYS[0] },
-    { id: crypto.randomUUID(), name: "", ...AVAILABLE_KEYS[1] },
-    { id: crypto.randomUUID(), name: "", ...AVAILABLE_KEYS[2] },
+    { id: crypto.randomUUID(), name: "", avatar: "", ...AVAILABLE_KEYS[0] },
+    { id: crypto.randomUUID(), name: "", avatar: "", ...AVAILABLE_KEYS[1] },
+    { id: crypto.randomUUID(), name: "", avatar: "", ...AVAILABLE_KEYS[2] },
   ]);
 
   // динамическое изменение количества игроков
@@ -33,6 +34,7 @@
       newPlayers.push({
         id: crypto.randomUUID(),
         name: "",
+        avatar: "",
         displayKey: AVAILABLE_KEYS[i].displayKey,
         eventKey: AVAILABLE_KEYS[i].eventKey,
       })}
@@ -64,6 +66,7 @@
       name: p.name.trim(),
       key: p.eventKey,
       score: 0,
+      avatar: p.avatar,
     }));
 
     const availableCats: RawCatQuestion[] = [...gameData.catQuestions];
@@ -166,15 +169,18 @@
                 Клавиша: {player.displayKey}
               </span>
             </label>
-            <input
-              data-test-id="input-{index + 1}"
-              id="player-{index}"
-              type="text"
-              placeholder="Введите имя..."
-              class="input input-bordered text-secondary w-full focus:input-primary"
-              bind:value={player.name}
-              onkeydown={(e) => e.key === "Enter" && handleStartGame()}
-            />
+            <div class="flex gap-4 items-center w-full">
+              <Upload bind:avatar={player.avatar} />
+              <input
+                data-test-id="input-{index + 1}"
+                id="player-{index}"
+                type="text"
+                placeholder="Введите имя..."
+                class="input input-bordered text-secondary w-full focus:input-primary"
+                bind:value={player.name}
+                onkeydown={(e) => e.key === "Enter" && handleStartGame()}
+              />
+            </div>
           </div>
         {/each}
       </div>
