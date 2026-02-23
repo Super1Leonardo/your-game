@@ -2,7 +2,7 @@
   import type { Player } from "$lib/types";
   import { game } from "$lib/state/gameStore.svelte";
   import DevModeButtons from "./DevModeButtons.svelte";
-  import PlayerCombobox from "./PlayerDropdown.svelte";
+  import PlayerDropdown from "./PlayerDropdown.svelte";
   import GameDialog from "./GameDialog.svelte";
   import { fly } from "svelte/transition";
 
@@ -51,7 +51,7 @@
 
     <div class="flex flex-col gap-2 mb-8">
       <label for="cat-input" class="text-sm font-semibold">Игрок:</label>
-      <PlayerCombobox
+      <PlayerDropdown
         players={otherPlayers}
         bind:selectedPlayer={tempSelectedPlayer}
       />

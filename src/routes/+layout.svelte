@@ -1,7 +1,6 @@
 <script lang="ts">
   import "./layout.css";
   import favicon from "$lib/assets/favicon.svg";
-  import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import {
     game,
@@ -15,6 +14,7 @@
   import { onMount } from "svelte";
   import Toaster from "$lib/components/ui/Toaster.svelte";
   import { fly } from "svelte/transition"; // Используем fly вместо fade
+  import { page } from "$app/stores";
 
   let { children } = $props();
   let isInitialized = $state(false);

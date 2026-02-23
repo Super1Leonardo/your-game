@@ -4,6 +4,10 @@
   import gameData from "$lib/data/data.json";
   import { addToast } from "$lib/components/ui/Toaster.svelte";
   import { prepareRound, type RawCatQuestion } from "$lib/utils/boardGenerator";
+  import { fade, slide } from "svelte/transition"; 
+  import ThemeSwitcher from "$lib/components/ui/ThemeSwitcher.svelte";
+
+  let isDropdownOpen = $state(false);
 
   const AVAILABLE_KEYS = [
     { displayKey: "A", eventKey: "a" },
@@ -85,9 +89,12 @@
 </script>
 
 <div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+  <div class="absolute top-1 z-50 mt-8 ">
+    <ThemeSwitcher />
+  </div>
   <div class="card w-full max-w-lg bg-base-100 shadow-xl">
     <div class="card-body">
-      <h1 class="card-title text-4xl font-bold justify-center mb-4 mt-6">
+      <h1 class="card-title text-4xl text-secondary font-bold justify-center mb-4 mt-6">
         Подготовка игры
       </h1>
 
@@ -96,29 +103,66 @@
       </p>
 
       <div class="form-control w-full mb-4">
-        <label class="label" for="player-count">
-          <span class="label-text mb-0.5 font-semibold"
-            >Количество игроков:</span>
-        </label>
-        <select
-          id="player-count"
-          class="select select-bordered w-full focus:select-primary text-lg"
-          bind:value={playerCount}
-          onchange={() => updatePlayerCount(playerCount)}
-          data-test-id="setup-player-count-select">
-          {#each [2, 3, 4, 5, 6] as count}
-            <option value={count}>{count} {count > 4 ? "игроков" : "игрока"}</option>
-          {/each}
-        </select>
+        <p class="label" id="player-count-label">
+          <span class="label-text text-secondary/50 mb-0.5 font-semibold">Количество игроков:</span>
+        </p>
+        
+        <div class="relative w-full">
+          <button
+            type="button"
+            aria-labelledby="player-count-label"
+            class="select select-bordered w-full focus:select-primary text-lg flex items-center justify-between"
+            onclick={() => (isDropdownOpen = !isDropdownOpen)}
+            data-test-id="setup-player-count-select"
+          >
+            <span class="text-secondary">{playerCount} {playerCount > 4 ? "игроков" : "игрока"}</span>
+          </button>
+
+          {#if isDropdownOpen}
+            <button 
+              tabindex="-1" 
+              type="button" 
+              class="fixed inset-0 z-40 w-full h-full cursor-default" 
+              onclick={() => isDropdownOpen = false}
+              aria-label="Закрыть меню"
+            ></button>
+
+            <ul
+              transition:fade={{ duration: 150 }}
+              class="absolute top-full z-50 mt-2 w-full flex-col rounded-box bg-base-200 p-2 shadow-xl border border-base-content/10"
+            >
+              {#each [2, 3, 4, 5, 6] as count}
+                <li>
+                  <button
+                    type="button"
+                    class="w-full cursor-pointer flex items-center justify-between rounded-md px-4 py-3 hover:bg-primary hover:text-primary-content transition-colors "
+                    onclick={() => {
+                      playerCount = count;
+                      updatePlayerCount(count);
+                      isDropdownOpen = false;
+                    }}
+                  >
+                    <span>{count} {count > 4 ? "игроков" : "игрока"}</span>
+                    {#if playerCount === count}
+                      <span class="font-bold">✓</span>
+                    {/if}
+                  </button>
+                </li>
+              {/each}
+            </ul>
+          {/if}
+        </div>
       </div>
 
-      <div class="flex flex-col gap-4">
-        {#each playersInput as player, index}
+      <div class="flex flex-col ">
+        {#each playersInput as player, index (player.id)}
           <div
-            class="form-control w-full animate-in fade-in slide-in-from-top-2">
+            transition:slide={{ duration: 300 }}
+            class="form-control w-full pb-4"
+          >
             <label class="label mb-1" for="player-{index}">
-              <span class="label-text font-semibold">Игрок {index + 1}</span>
-              <span class="label-text-alt badge badge-soft badge-secondary">
+              <span class="font-semibold text-secondary/50">Игрок {index + 1}</span>
+              <span class="badge badge-soft badge-secondary">
                 Клавиша: {player.displayKey}
               </span>
             </label>
@@ -127,9 +171,10 @@
               id="player-{index}"
               type="text"
               placeholder="Введите имя..."
-              class="input input-bordered w-full focus:input-primary"
+              class="input input-bordered text-secondary w-full focus:input-primary"
               bind:value={player.name}
-              onkeydown={(e) => e.key === "Enter" && handleStartGame()}/>
+              onkeydown={(e) => e.key === "Enter" && handleStartGame()}
+            />
           </div>
         {/each}
       </div>
@@ -144,3 +189,11 @@
     </div>
   </div>
 </div>
+
+<style>
+  @reference "../layout.css";
+  div {
+    @apply transition-colors duration-300 ease-in-out;
+  }
+
+</style>
