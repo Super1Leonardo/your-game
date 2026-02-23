@@ -31,7 +31,7 @@
             {/if}
           </div>
         </div>
-        <h2 class="card-title text-2xl">
+        <h2 class="card-title -mt-2 text-2xl">
           {player.name}
         </h2>
         <h3 data-test-id="player-score" class="text-5xl mb-2 font-bold">

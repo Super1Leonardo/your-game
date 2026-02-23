@@ -16,10 +16,11 @@ const defaultState: GameState = {
   auctionState: null,
   finalState: null,
   pausedRemainingMs: null,
+  customPack: null,
 };
 
 export const game = $state<GameState>(
-  JSON.parse(JSON.stringify(defaultState)) // чтобы не менять оригинал defaultState
+  JSON.parse(JSON.stringify(defaultState)), // чтобы не менять оригинал defaultState
 );
 
 export function loadGame() {
