@@ -14,12 +14,12 @@
   } from "$lib/state/devStore.svelte";
   import { onMount } from "svelte";
   import Toaster from "$lib/components/ui/Toaster.svelte";
+  import { fly } from "svelte/transition"; // Используем fly вместо fade
 
   let { children } = $props();
   let isInitialized = $state(false);
 
   onMount(() => {
-    // трекинг изменений
     loadGame();
     initStorePersistence();
     loadDevMode();
@@ -27,7 +27,6 @@
     isInitialized = true;
   });
 
-  // крч чтобы на старт всегда направляло
   $effect(() => {
     if (isInitialized) {
       const isAtHome = $page.url.pathname === "/";
@@ -47,8 +46,12 @@
 </svelte:head>
 
 {#if isInitialized}
-  <main class="min-h-screen bg-base-300 text-base-content">
-    {@render children()}
+  <main class="min-h-screen bg-base-300 text-base-content overflow-hidden">
+    {#key $page.url.pathname}
+      <div class="w-full h-full" in:fly={{ y: 30, duration: 400, delay: 50 }}>
+        {@render children()}
+      </div>
+    {/key}
     <Toaster />
   </main>
 {:else}

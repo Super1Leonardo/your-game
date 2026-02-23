@@ -3,6 +3,7 @@
   import Timer from "$lib/components/game/Timer.svelte";
   import DevModeButtons from "$lib/components/game/DevModeButtons.svelte";
   import { devMode } from "$lib/state/devStore.svelte";
+  import { slide } from "svelte/transition";
 
   let {
     answerInput = $bindable(),
@@ -33,30 +34,38 @@
       {game.activeQuestion?.text}
     </h2>
 
-    {#if devMode.enabled}
-      <div class="flex justify-center items-stretch gap-3 mt-4 w-full">
-        <div
-          class="px-4 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
-        >
-          <span
-            >Ответ: <strong data-test-id="question-answer"
-              >{game.activeQuestion?.answer}</strong
-            ></span
+    <div
+      class="grid transition-all duration-300 ease-in-out w-full"
+      style="grid-template-rows: {devMode.enabled
+        ? '1fr'
+        : '0fr'}; opacity: {devMode.enabled ? '1' : '0'};"
+      inert={!devMode.enabled}
+    >
+      <div class="overflow-hidden">
+        <div class="flex justify-center items-stretch gap-3 w-full">
+          <div
+            class="px-4 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
           >
+            <span
+              >Ответ: <strong data-test-id="question-answer"
+                >{game.activeQuestion?.answer}</strong
+              ></span
+            >
+          </div>
+          {#if game.timerEndsAt}
+            <button
+              class="btn btn-warning w-1/5 text-lg h-auto"
+              onclick={pauseTimer}>Пауза</button
+            >
+          {:else if pausedRemainingMs !== null && !game.answeringPlayerId}
+            <button
+              class="btn btn-success w-1/5 text-lg h-auto"
+              onclick={resumeTimer}>Возобновить</button
+            >
+          {/if}
         </div>
-        {#if game.timerEndsAt}
-          <button
-            class="btn btn-warning w-1/5 text-lg h-auto"
-            onclick={pauseTimer}>Пауза</button
-          >
-        {:else if pausedRemainingMs !== null && !game.answeringPlayerId}
-          <button
-            class="btn btn-success w-1/5 text-lg h-auto"
-            onclick={resumeTimer}>Возобновить</button
-          >
-        {/if}
       </div>
-    {/if}
+    </div>
 
     {#if !game.answeringPlayerId}
       <div class="flex flex-col items-center gap-4 mt-4">
@@ -111,8 +120,6 @@
       </div>
     {/if}
 
-    {#if devMode.enabled}
-      <div class="w-1/2"><DevModeButtons /></div>
-    {/if}
+    <DevModeButtons />
   </div>
 </div>

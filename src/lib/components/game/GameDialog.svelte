@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Dialog } from "melt/builders";
   import type { Snippet } from "svelte";
+  import { fly } from "svelte/transition";
 
   let {
     open = $bindable(true),
@@ -38,6 +39,7 @@
 <div
   {...dialog.content}
   class="fixed left-1/2 top-1/2 z-50 w-[90vw] m-0 -translate-x-1/2 -translate-y-1/2 rounded-box bg-base-100 p-8 shadow-2xl melt-dialog {contentClass}"
+  transition:fly={{ y: 30, duration: 400, delay: 50 }}
   oncancel={(e) => e.preventDefault()}
   onkeydown={(e) => {
     if (e.key === "Escape") {
@@ -52,18 +54,18 @@
 <style>
   .melt-dialog {
     opacity: 0;
-    scale: 0.95;
-    transition: ease 200ms;
+    transform: translateY(2rem) scale(0.95); /* вниз и немного уменьшаем */
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1); /* ease-out */
   }
 
   .melt-dialog[data-open] {
     opacity: 1;
-    scale: 1;
+    transform: translateY(0) scale(1);
   }
 
   .melt-overlay {
     opacity: 0;
-    transition: ease 200ms;
+    transition: opacity 400ms ease;
     pointer-events: none;
   }
 

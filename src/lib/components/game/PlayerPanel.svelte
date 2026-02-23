@@ -24,18 +24,27 @@
           Кнопка: {player.key === " " ? "Пробел" : player.key.toUpperCase()}
         </div>
 
-        {#if devMode.enabled}
-          <div class="flex mt-2">
-            <button
-              class="btn btn-sm btn-soft btn-error text-sm rounded-r-none"
-              onclick={() => (player.score -= 100)}>Убрать 100</button
-            >
-            <button
-              class="btn flex btn-sm btn-soft btn-success text-sm rounded-l-none"
-              onclick={() => (player.score += 100)}>Добавить 100</button
-            >
+        <div
+          class="grid transition-all duration-300 ease-in-out w-full"
+          style="grid-template-rows: {devMode.enabled
+            ? '1fr'
+            : '0fr'}; opacity: {devMode.enabled ? '1' : '0'};"
+        >
+          <div class="overflow-hidden flex justify-center">
+            <div class="flex pt-2">
+              <button
+                class="btn btn-sm btn-soft btn-error text-sm rounded-r-none"
+                disabled={!devMode.enabled}
+                onclick={() => (player.score -= 100)}>Убрать 100</button
+              >
+              <button
+                class="btn flex btn-sm btn-soft btn-success text-sm rounded-l-none"
+                disabled={!devMode.enabled}
+                onclick={() => (player.score += 100)}>Добавить 100</button
+              >
+            </div>
           </div>
-        {/if}
+        </div>
       </div>
     </div>
   {/each}

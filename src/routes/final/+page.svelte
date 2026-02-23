@@ -6,6 +6,7 @@
   import FinalBets from "$lib/components/game/FinalBets.svelte";
   import FinalQuestion from "$lib/components/game/FinalQuestion.svelte";
   import FinalReveal from "$lib/components/game/FinalReveal.svelte";
+  import { fade, fly } from "svelte/transition"; // <-- Добавляем импорт анимаций
 
   let finalPlayers = $derived(game.players.filter((p) => p.score > 0));
 
@@ -36,16 +37,35 @@
 </script>
 
 <div
-  class="min-h-screen bg-base-200 flex flex-col items-center py-8 px-4 gap-7"
+  class="min-h-screen bg-base-200 flex flex-col transition-colors duration-150 items-center py-8 px-4 gap-7 overflow-x-hidden"
 >
   <Header />
-  <div class="grow w-full max-w-4xl flex flex-col justify-center items-center">
+
+  <div class="grow w-full max-w-4xl grid place-items-center">
     {#if step === "betting"}
-      <FinalBets {finalPlayers} />
+      <div
+        class="col-start-1 row-start-1 w-full"
+        in:fly={{ x: 50, duration: 400, delay: 400 }}
+        out:fly={{ x: -50, duration: 400 }}
+      >
+        <FinalBets {finalPlayers} />
+      </div>
     {:else if step === "answering"}
-      <FinalQuestion {finalPlayers} />
+      <div
+        class="col-start-1 row-start-1 w-full"
+        in:fly={{ x: 50, duration: 400, delay: 400 }}
+        out:fly={{ x: -50, duration: 400 }}
+      >
+        <FinalQuestion {finalPlayers} />
+      </div>
     {:else if step === "reveal"}
-      <FinalReveal {finalPlayers} />
+      <div
+        class="col-start-1 row-start-1 w-full"
+        in:fly={{ y: 50, duration: 400, delay: 400 }}
+        out:fade={{ duration: 300 }}
+      >
+        <FinalReveal {finalPlayers} />
+      </div>
     {/if}
   </div>
 </div>

@@ -2,6 +2,7 @@
   import type { Player } from "$lib/types";
   import { game } from "$lib/state/gameStore.svelte";
   import { addToast } from "$lib/components/ui/Toaster.svelte";
+  import { fade } from "svelte/transition";
 
   let { finalPlayers }: { finalPlayers: Player[] } = $props();
 
@@ -42,12 +43,22 @@
 
     {#if !isAllBetsDone && currentPlayer}
       <div class="w-full max-w-md animate-in fade-in zoom-in duration-300">
-        <h3 class="text-2xl mb-2">
-          Ставку делает <span class="font-extrabold text-primary"
-            >{currentPlayer.name}</span
-          >
-        </h3>
-        <p class="mb-6 opacity-60 text-sm uppercase tracking-wide">
+        <div class="grid place-items-center h-10 w-full relative">
+          <div class="grid place-items-center h-10 w-full relative">
+            {#key currentPlayer.id}
+              <h3
+                in:fade={{ duration: 300, delay: 150 }}
+                out:fade={{ duration: 150 }}
+                class="text-2xl mb-2 col-start-1 row-start-1 whitespace-nowrap absolute top-0"
+              >
+                Ставку делает <span class="font-extrabold text-secondary"
+                  >{currentPlayer.name}</span
+                >
+              </h3>
+            {/key}
+          </div>
+        </div>
+        <p class="mb-6 text-error text-sm uppercase tracking-wide">
           Остальные игроки, отвернитесь!
         </p>
 
@@ -63,14 +74,14 @@
             data-test-id="final-bet-input"
             max={currentPlayer.score}
             bind:value={betInput}
-            class="input border-2 input-primary input-lg w-full text-center text-2xl font-bold"
+            class="input border-2 input-primary input-lg w-full mb-3 mt-1 text-center text-2xl font-bold"
             placeholder="Ваша ставка"
             onkeydown={(e) => e.key === "Enter" && submitBet()}
           />
         </div>
         <button
           data-test-id="final-bet-submit"
-          class="btn btn-primary btn-lg w-full mt-6"
+          class="btn btn-primary btn-lg w-full"
           onclick={submitBet}
         >
           Подтвердить и скрыть ставку

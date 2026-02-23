@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Combobox } from "melt/builders";
   import type { Player } from "$lib/types";
+  import { fade } from "svelte/transition";
 
   let {
     players,
@@ -14,19 +15,19 @@
     forceVisible: true,
   });
 
-  // Синхронизируем внутреннее состояние Combobox с внешней переменной selectedPlayer
+  // синхронизация  с selectedPlayer
   $effect(() => {
     selectedPlayer = combobox.value ?? null;
   });
 
-  // Синхронизация текста инпута при закрытии меню
+  // синхронизация текста инпута при закрытии меню
   $effect(() => {
     if (!combobox.open) {
       combobox.inputValue = combobox.value?.name ?? "";
     }
   });
 
-  // Фильтрация игроков на основе введенного текста
+  // фильтрация игроков на основе введенного текста
   const filteredPlayers = $derived.by(() => {
     if (!combobox.touched) return players;
     const normalizedInput = combobox.inputValue.trim().toLowerCase();
@@ -46,6 +47,7 @@
 
   {#if combobox.open}
     <ul
+      transition:fade={{ duration: 150 }}
       {...combobox.content}
       class="absolute z-50 mt-1 max-h-50 w-full flex-col overflow-y-auto rounded-box bg-base-200 p-2 shadow-xl border border-base-content/10"
     >

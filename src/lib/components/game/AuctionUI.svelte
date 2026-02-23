@@ -4,6 +4,7 @@
   import DevModeButtons from "./DevModeButtons.svelte";
   import GameDialog from "./GameDialog.svelte";
   import type { Player } from "$lib/types";
+  import { fade, fly } from "svelte/transition";
 
   let {
     highestBetterId,
@@ -33,16 +34,25 @@
 >
   <h2 class="text-4xl font-extrabold">Аукцион!</h2>
   <div class="flex flex-col gap-2 bg-base-200 p-4 rounded-xl w-full">
-    <p class="text-lg">
-      Номинал: <strong data-test-id="min-bet" class="text-secondary"
-        >{game.activeQuestion?.price}</strong
-      >
-    </p>
-    {#if highestBetterId}
-      <p class="text-xl">
-        Ставка: <strong>{currentBet}</strong> ({highestBetterName})
-      </p>
-    {/if}
+    <div class="grid place-items-center">
+      {#if !highestBetterId}
+        <p
+          out:fly={{ x: 50, duration: 300 }}
+          class="col-start-1 row-start-1 text-lg"
+        >
+          Номинал: <strong data-test-id="min-bet" class="text-secondary"
+            >{game.activeQuestion?.price}</strong
+          >
+        </p>
+      {:else}
+        <p
+          in:fly={{ x: -50, duration: 300 }}
+          class="col-start-1 row-start-1 text-xl"
+        >
+          Ставка: <strong>{currentBet}</strong> ({highestBetterName})
+        </p>
+      {/if}
+    </div>
     {#if isAllInMode}
       <div
         data-test-id="allin-badge"
@@ -103,7 +113,5 @@
     </button>
   </div>
 
-  {#if devMode.enabled}
-    <DevModeButtons />
-  {/if}
+  <DevModeButtons />
 </GameDialog>

@@ -7,10 +7,11 @@
   import { initKeyboardManager } from "$lib/utils/keyboardManager";
   import Header from "$lib/components/game/Header.svelte";
   import Auction from "$lib/components/game/Auction.svelte";
-  import AvgQuestion from "$lib/components/game/AvgQuestion.svelte"; // <-- Импортируем компонент
+  import AvgQuestion from "$lib/components/game/AvgQuestion.svelte";
   import { endQuestion } from "$lib/utils/gameActions";
   import { checkAnswer } from "$lib/utils/answerChecker";
   import { pauseGameTimer, resumeGameTimer } from "$lib/utils/timer";
+  import { fade, fly } from "svelte/transition";
 
   let answerInput = $state("");
   let isSpecialSetupDone = $state(false);
@@ -116,20 +117,36 @@
   class="min-h-screen bg-base-200 flex flex-col items-center justify-center py-8 px-4"
 >
   <Header />
-  <div class="grow w-full flex flex-col items-center justify-center">
+  <div class="grow w-full grid place-items-center">
     {#if isCat && !isSpecialSetupDone}
-      <Cat onSetupComplete={() => (isSpecialSetupDone = true)} />
+      <div
+        class="col-start-1 row-start-1 w-full flex justify-center"
+        out:fly={{ y: -30, duration: 300 }}
+      >
+        <Cat onSetupComplete={() => (isSpecialSetupDone = true)} />
+      </div>
     {:else if isAuction && !isSpecialSetupDone}
-      <Auction onSetupComplete={() => (isSpecialSetupDone = true)} />
+      <div
+        class="col-start-1 row-start-1 w-full flex justify-center"
+        out:fly={{ y: -30, duration: 300 }}
+      >
+        <Auction onSetupComplete={() => (isSpecialSetupDone = true)} />
+      </div>
     {:else if game.activeQuestion}
-      <AvgQuestion
-        bind:answerInput
-        {submitAnswer}
-        {handleTimeUp}
-        {pauseTimer}
-        {resumeTimer}
-        pausedRemainingMs={game.pausedRemainingMs}
-      />
+      <div
+        class="col-start-1 row-start-1 w-full flex justify-center"
+        in:fly={{ y: 30, duration: 400, delay: 300 }}
+        out:fade={{ duration: 200 }}
+      >
+        <AvgQuestion
+          bind:answerInput
+          {submitAnswer}
+          {handleTimeUp}
+          {pauseTimer}
+          {resumeTimer}
+          pausedRemainingMs={game.pausedRemainingMs}
+        />
+      </div>
     {/if}
   </div>
 </div>

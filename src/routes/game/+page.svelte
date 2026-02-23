@@ -16,7 +16,7 @@
   let isRoundFinished = $derived.by(() => {
     if (themes.length === 0) return false;
     return themes.every((theme) =>
-      theme.questions.every((q) => q.isPlayed === true)
+      theme.questions.every((q) => q.isPlayed === true),
     );
   });
   function handleNextRound() {
@@ -24,7 +24,7 @@
       game.phase = "round2";
       const lowestPlayer = [...game.players].sort(
         // игрок с мин счетом; что бы не мутировать оригинал
-        (a, b) => a.score - b.score
+        (a, b) => a.score - b.score,
       )[0];
       game.currentPlayerId = lowestPlayer.id;
     } else if (game.phase === "round2") {
