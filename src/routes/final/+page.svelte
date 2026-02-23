@@ -3,9 +3,9 @@
   import { game } from "$lib/state/gameStore.svelte";
   import { onMount } from "svelte";
   import Header from "$lib/components/game/Header.svelte";
-  import FinalBets from "$lib/components/game/FinalBets.svelte";
-  import FinalQuestion from "$lib/components/game/FinalQuestion.svelte";
-  import FinalReveal from "$lib/components/game/FinalReveal.svelte";
+  import FinalBets from "$lib/components/final/FinalBets.svelte";
+  import FinalQuestion from "$lib/components/final/FinalQuestion.svelte";
+  import FinalReveal from "$lib/components/final/FinalReveal.svelte";
   import { fade, fly } from "svelte/transition";
 
   let finalPlayers = $derived(game.players.filter((p) => p.score > 0));
