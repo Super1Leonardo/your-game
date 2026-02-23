@@ -16,7 +16,7 @@
       <div class="card-body items-center text-center p-2">
         <div class="avatar {player.avatar ? '' : 'placeholder'}">
           <div
-            class="w-16 h-16 rounded-full bg-neutral text-neutral-content flex justify-center items-center"
+            class="w-16 h-16 rounded-full bg-base-300 text-secondary flex justify-center items-center"
           >
             {#if player.avatar}
               <img

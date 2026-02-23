@@ -2,7 +2,7 @@
   let isDarkMode = $state(
     typeof window !== "undefined"
       ? localStorage.getItem("igra-theme") === "dark"
-      : false
+      : false,
   );
 
   $effect(() => {

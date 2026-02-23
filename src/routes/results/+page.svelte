@@ -8,24 +8,16 @@
     [...game.players].sort((a, b) => b.score - a.score),
   );
 
-  // Вычисляем максимальный счет
   let maxScore = $derived(sortedPlayers[0]?.score ?? 0);
-
-  // По правилам игры, победить может только игрок с положительным балансом
   let hasWinners = $derived(maxScore > 0);
-
-  // Если есть победители, собираем всех с максимальным счетом (ничья)
-  let winners = $derived(
+  let winners = $derived( // несколько победителей
     hasWinners ? sortedPlayers.filter((p) => p.score === maxScore) : [],
   );
-
-  // Остальные игроки (или все, если победителей нет)
-  let losers = $derived(
+  let losers = $derived( // остальные
     hasWinners
       ? sortedPlayers.filter((p) => p.score !== maxScore)
       : sortedPlayers,
   );
-
   onMount(() => {
     if (game.players.length === 0) {
       goto("/");
@@ -39,44 +31,34 @@
 </script>
 
 <div
-  class="min-h-screen bg-base-200 flex flex-col items-center py-8 px-4 gap-7"
->
+  class="min-h-screen bg-base-200 flex flex-col items-center py-8 px-4 gap-7">
   <Header />
-
   <div
-    class="grow w-full max-w-4xl flex flex-col justify-center items-center gap-8"
-  >
+    class="grow w-full max-w-4xl flex flex-col justify-center items-center gap-8">
     <h2 class="text-6xl font-extrabold text-secondary drop-shadow-md">
       Итоги игры
     </h2>
 
     {#if hasWinners}
       <div
-        class="card bg-base-100 shadow-2xl border-t-4 border-warning w-full max-w-3xl animate-in fade-in zoom-in duration-500"
-      >
+        class="card bg-base-100 shadow-2xl border-t-4 border-warning w-full max-w-3xl animate-in fade-in zoom-in duration-500">
         <div class="card-body items-center text-center p-10 gap-4">
-          <div class="text-warning text-7xl mb-2 drop-shadow-lg">👑</div>
+          <div class="text-warning -mt-5 text-7xl mb-2 drop-shadow-lg">👑</div>
           <h3 class="text-2xl opacity-80 uppercase tracking-widest font-bold">
             {winners.length > 1 ? "Победители" : "Победитель"}
           </h3>
-
           <div class="flex flex-wrap justify-center gap-8 mt-4">
             {#each winners as winner}
               <div class="flex flex-col items-center gap-3">
                 <div class="avatar {winner.avatar ? '' : 'placeholder'}">
-                  <div
-                    class="w-24 h-24 rounded-full bg-neutral text-neutral-content flex justify-center items-center ring-4 ring-warning ring-offset-base-100 ring-offset-4"
-                  >
+                  <div class="w-24 h-24 rounded-full bg-neutral text-neutral-content flex justify-center items-center ring-4 ring-warning ring-offset-base-100 ring-offset-4">
                     {#if winner.avatar}
                       <img
                         src={winner.avatar}
                         alt="Аватар {winner.name}"
-                        class="object-cover"
-                      />
+                        class="object-cover"/>
                     {:else}
-                      <span class="text-4xl font-bold"
-                        >{winner.name.charAt(0).toUpperCase()}</span
-                      >
+                      <span class="text-4xl font-bold">{winner.name.charAt(0).toUpperCase()}</span>
                     {/if}
                   </div>
                 </div>
@@ -87,17 +69,13 @@
             {/each}
           </div>
 
-          <div
-            class="badge badge-warning badge-lg p-6 text-3xl mt-6 font-bold shadow-sm"
-          >
+          <div class="badge badge-warning badge-lg p-6 text-3xl mt-6 font-bold shadow-sm">
             {maxScore} баллов
           </div>
         </div>
       </div>
     {:else}
-      <div
-        class="card bg-base-100 shadow-2xl border-t-4 border-error w-full max-w-2xl animate-in fade-in duration-500"
-      >
+      <div class="card bg-base-100 shadow-2xl border-t-4 border-error w-full max-w-2xl animate-in fade-in duration-500">
         <div class="card-body items-center text-center p-10 gap-4">
           <div class="text-error text-7xl mb-2 drop-shadow-lg">💀</div>
           <h3 class="text-2xl opacity-80 uppercase tracking-widest font-bold">
@@ -115,14 +93,11 @@
 
     <div class="w-full max-w-2xl flex flex-col gap-4">
       {#each losers as player, i}
-        <div
-          class="flex items-center justify-between p-6 bg-base-100 rounded-box shadow-md border-2 border-base-content/5 transition-all hover:scale-[1.02]"
-        >
+        <div class="flex items-center justify-between p-6 bg-base-100 rounded-box shadow-md border-2 border-base-content/5 transition-all hover:scale-[1.02]">
           <div class="flex items-center gap-4">
             <span class="text-2xl font-bold opacity-50">
               #{hasWinners ? winners.length + i + 1 : i + 1}
             </span>
-
             <div class="avatar {player.avatar ? '' : 'placeholder'}">
               <div
                 class="w-12 h-12 rounded-full bg-neutral text-neutral-content flex justify-center items-center ring ring-base-300 ring-offset-base-100 ring-offset-2"

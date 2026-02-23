@@ -6,7 +6,7 @@
   import FinalBets from "$lib/components/game/FinalBets.svelte";
   import FinalQuestion from "$lib/components/game/FinalQuestion.svelte";
   import FinalReveal from "$lib/components/game/FinalReveal.svelte";
-  import { fade, fly } from "svelte/transition"; // <-- Добавляем импорт анимаций
+  import { fade, fly } from "svelte/transition";
 
   let finalPlayers = $derived(game.players.filter((p) => p.score > 0));
 
