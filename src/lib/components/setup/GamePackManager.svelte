@@ -4,7 +4,6 @@
   import { addToast } from "$lib/components/ui/Toaster.svelte";
   import { FileUpload } from "melt/builders";
 
-  // Вычисляемые значения из глобального стора
   let currentPack = $derived(game.customPack ?? gameData);
   let isCustomPack = $derived(!!game.customPack);
 
@@ -13,7 +12,7 @@
     multiple: false,
   });
 
-  // Логика загрузки (Импорт)
+  // импорт
   $effect(() => {
     const currentSelection = packUpload.selected;
     const file = Array.isArray(currentSelection)
@@ -33,7 +32,7 @@
             parsed.catQuestions &&
             parsed.finalQuestion
           ) {
-            game.customPack = parsed; // Пишем в глобальный стор
+            game.customPack = parsed; // пишем в глобальный стор
             addToast({
               data: { title: "Пакет успешно загружен!", type: "success" },
             });
@@ -56,7 +55,7 @@
     }
   });
 
-  // Логика скачивания (Экспорт)
+  // экспорт
   function handleExport() {
     const dataStr = JSON.stringify(currentPack, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
@@ -72,7 +71,7 @@
 </script>
 
 <div
-  class="form-control w-full mb-6 p-4 bg-base-200/50 rounded-box border border-base-content/10"
+  class="form-control w-full p-4 bg-base-200/50 rounded-box border border-base-content/10"
 >
   <p class="label pt-0">
     <span class="label-text text-secondary/50 font-semibold"

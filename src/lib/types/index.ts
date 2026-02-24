@@ -25,6 +25,31 @@ export interface Theme {
   questions: Question[]; // ровно 5
 }
 
+export interface RawQuestion {
+  cost: number;
+  text: string;
+  answer: string;
+}
+
+export interface RawTheme {
+  theme: string;
+  questions: RawQuestion[];
+}
+
+export interface RawSpecialQuestion {
+  theme: string;
+  text: string;
+  answer: string;
+}
+
+export interface GamePack {
+  round1: RawTheme[];
+  round2: RawTheme[];
+  catQuestions: RawSpecialQuestion[];
+  finalQuestion: RawSpecialQuestion; // Используем RawCatQuestion, так как структура совпадает (theme, text, answer)
+  customPack?: boolean;
+}
+
 export interface AuctionState {
   currentBet: number;
   highestBidderId: string | null; // кто поставил больше всех
@@ -60,5 +85,5 @@ export interface GameState {
   finalState: FinalRoundState | null;
 
   // пак вопросов
-  customPack: any | null;
+  customPack: GamePack | null;
 }

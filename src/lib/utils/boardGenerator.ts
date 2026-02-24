@@ -1,23 +1,8 @@
-import type { Question, Theme } from "$lib/types";
-
-export interface RawQuestion {
-  cost: number;
-  text: string;
-  answer: string;
-}
-export interface RawTheme {
-  theme: string;
-  questions: RawQuestion[];
-}
-export interface RawCatQuestion {
-  theme: string;
-  text: string;
-  answer: string;
-}
+import type { Question, Theme, RawTheme, RawSpecialQuestion } from "$lib/types";
 
 export function prepareRound(
   rawThemes: RawTheme[],
-  catPool: RawCatQuestion[],
+  catPool: RawSpecialQuestion[],
 ): Theme[] {
   const themes: Theme[] = rawThemes.map((rt) => ({
     id: crypto.randomUUID(),

@@ -31,9 +31,10 @@
     if (isInitialized) {
       const isAtHome = $page.url.pathname === "/";
       const isAtSetup = $page.url.pathname === "/setup";
+      const isAtEditor = $page.url.pathname === "/editor";
       const hasNoPlayers = game.players.length === 0;
 
-      if (!isAtHome && !isAtSetup && hasNoPlayers) {
+      if (!isAtHome && !isAtSetup && !isAtEditor && hasNoPlayers) {
         goto("/");
       }
     }

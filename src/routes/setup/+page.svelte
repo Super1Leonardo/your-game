@@ -3,7 +3,8 @@
   import { game } from "$lib/state/gameStore.svelte";
   import gameData from "$lib/data/data.json";
   import { addToast } from "$lib/components/ui/Toaster.svelte";
-  import { prepareRound, type RawCatQuestion } from "$lib/utils/boardGenerator";
+  import { prepareRound } from "$lib/utils/boardGenerator";
+  import type { RawSpecialQuestion } from "$lib/types";
   import ThemeSwitcher from "$lib/components/ui/ThemeSwitcher.svelte";
 
   // Импорт новых компонентов
@@ -49,7 +50,7 @@
     }));
 
     const pack = game.customPack ?? gameData; // либо стор либо загруженный
-    const availableCats: RawCatQuestion[] = [...pack.catQuestions];
+    const availableCats: RawSpecialQuestion[] = [...pack.catQuestions];
 
     game.round1Themes = prepareRound(pack.round1, availableCats);
     game.round2Themes = prepareRound(pack.round2, availableCats);
@@ -73,7 +74,7 @@
 <div
   class="min-h-screen bg-base-200 flex transition-colors duration-300 items-center justify-center p-4"
 >
-  <div class="absolute top-1 z-50 mt-8">
+  <div class="absolute top-1 z-50 mt-4">
     <ThemeSwitcher />
   </div>
   <div
@@ -93,6 +94,12 @@
       <PlayerSetup bind:playersInput />
 
       <GamePackManager />
+
+      <div class="w-full mb-2">
+        <a href="/editor" class="btn btn-outline btn-secondary w-full">
+          ✏️ Редактор вопросов
+        </a>
+      </div>
 
       <div class="card-actions justify-center mt-6">
         <button
