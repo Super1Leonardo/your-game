@@ -2,20 +2,19 @@
   import { FileUpload } from "melt/builders";
   import { fade } from "svelte/transition";
 
-  // Двусторонняя привязка для сохранения base64-строки
+  // двусторонняя привязка для сохранения base64-строки
   let { avatar = $bindable() }: { avatar?: string } = $props();
 
-  // Инициализация по актуальной документации Melt UI
   const fileUpload = new FileUpload({
     accept: "image/jpeg, image/png, image/webp",
-    maxSize: 5 * 1024 * 1024, // 5 MB
-    multiple: false, // Заменяет выдуманный maxFiles
+    maxSize: 5 * 1024 * 1024, // 5 мегабайт
+    multiple: false,
   });
 
-  // Отслеживаем свойство selected из билдера
+  // отслеживаем свойство selected из билдера
   $effect(() => {
-    // В зависимости от типизации Melt UI, selected может быть массивом или одним файлом,
-    // если multiple = false. Приводим к File безопасно.
+    // selected может быть массивом или одним файлом
+    // если multiple = false, то приводим к одному файлу
     const currentSelection = fileUpload.selected;
     const file = Array.isArray(currentSelection)
       ? currentSelection[0]

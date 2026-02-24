@@ -19,6 +19,7 @@
     class="theme-controller"
     value="dark"
     bind:checked={isDarkMode}
+    aria-label="Переключить тему оформления"
   />
 
   <!-- sun icon -->

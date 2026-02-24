@@ -30,8 +30,8 @@
   }
 </script>
 
-<div
-  class="min-h-screen bg-base-200 flex flex-col items-center py-8 px-4 gap-7">
+<main
+  class="min-h-screen bg-base-200 flex flex-col items-center py-2 px-4 gap-7">
   <Header />
   <div
     class="grow w-full max-w-4xl flex flex-col justify-center items-center gap-8">
@@ -47,9 +47,9 @@
           <h3 class="text-2xl opacity-80 uppercase tracking-widest font-bold">
             {winners.length > 1 ? "Победители" : "Победитель"}
           </h3>
-          <div class="flex flex-wrap justify-center gap-8 mt-4">
+          <ul class="flex flex-wrap justify-center gap-8 mt-4">
             {#each winners as winner}
-              <div class="flex flex-col items-center gap-3">
+              <li class="flex flex-col items-center gap-3">
                 <div class="avatar {winner.avatar ? '' : 'placeholder'}">
                   <div class="w-24 h-24 rounded-full bg-neutral text-neutral-content flex justify-center items-center ring-4 ring-warning ring-offset-base-100 ring-offset-4">
                     {#if winner.avatar}
@@ -65,9 +65,9 @@
                 <h1 class="text-4xl font-extrabold text-base-content">
                   {winner.name}
                 </h1>
-              </div>
+              </li>
             {/each}
-          </div>
+            </ul>
 
           <div class="badge badge-warning badge-lg p-6 text-3xl mt-6 font-bold shadow-sm">
             {maxScore} баллов
@@ -91,9 +91,9 @@
       </div>
     {/if}
 
-    <div class="w-full max-w-2xl flex flex-col gap-4">
+    <ul class="w-full max-w-2xl flex flex-col gap-4">
       {#each losers as player, i}
-        <div class="flex items-center justify-between p-6 bg-base-100 rounded-box shadow-md border-2 border-base-content/5 transition-all hover:scale-[1.02]">
+        <li class="flex items-center justify-between p-6 bg-base-100 rounded-box shadow-md border-2 border-base-content/5 transition-all hover:scale-[1.02]">
           <div class="flex items-center gap-4">
             <span class="text-2xl font-bold opacity-50">
               #{hasWinners ? winners.length + i + 1 : i + 1}
@@ -126,9 +126,9 @@
           >
             {player.score}
           </span>
-        </div>
+        </li>
       {/each}
-    </div>
+    </ul>
 
     <button
       class="btn btn-primary btn-lg text-xl px-12 shadow-lg hover:shadow-primary/30 mt-4"
@@ -137,4 +137,4 @@
       Новая игра
     </button>
   </div>
-</div>
+</main>

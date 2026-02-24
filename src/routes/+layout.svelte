@@ -47,14 +47,14 @@
 </svelte:head>
 
 {#if isInitialized}
-  <main class="min-h-screen bg-base-300 text-base-content overflow-hidden">
+  <div class="min-h-screen bg-base-300 text-base-content overflow-hidden">
     {#key $page.url.pathname}
       <div class="w-full h-full" in:fly={{ y: 30, duration: 400, delay: 50 }}>
         {@render children()}
       </div>
     {/key}
     <Toaster />
-  </main>
+  </div>
 {:else}
   <div class="flex h-screen w-full items-center justify-center bg-base-100">
     <span class="loading loading-ring loading-lg text-primary"></span>

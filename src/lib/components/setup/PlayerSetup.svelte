@@ -44,11 +44,11 @@
 </script>
 
 <div class="form-control w-full mb-4">
-  <p class="label" id="player-count-label">
+  <label class="label" id="player-count-label" for="player-count-btn">
     <span class="label-text text-secondary/50 mb-0.5 font-semibold"
       >Количество игроков:</span
     >
-  </p>
+  </label>
 
   <div class="relative w-full">
     <button
@@ -57,6 +57,9 @@
       class="select select-bordered w-full focus:select-primary text-lg flex items-center justify-between"
       onclick={() => (isDropdownOpen = !isDropdownOpen)}
       data-test-id="setup-player-count-select"
+      id="player-count-btn"
+      aria-haspopup="listbox"
+      aria-expanded={isDropdownOpen}
     >
       <span class="text-secondary"
         >{playerCount} {playerCount > 4 ? "игроков" : "игрока"}</span
@@ -73,6 +76,7 @@
       ></button>
 
       <ul
+        role="listbox"
         transition:fade={{ duration: 150 }}
         class="absolute top-full z-50 mt-2 w-full flex-col rounded-box bg-base-200 p-2 shadow-xl border border-base-content/10"
       >
@@ -101,7 +105,10 @@
 
 <div class="flex flex-col">
   {#each playersInput as player, index (player.id)}
-    <div transition:slide={{ duration: 300 }} class="form-control w-full pb-4">
+    <fieldset
+      transition:slide={{ duration: 300 }}
+      class="form-control w-full pb-4"
+    >
       <label class="label mb-1" for="player-{index}">
         <span class="font-semibold text-secondary/50">Игрок {index + 1}</span>
         <span class="badge badge-soft badge-secondary ml-1"
@@ -119,6 +126,6 @@
           bind:value={player.name}
         />
       </div>
-    </div>
+    </fieldset>
   {/each}
 </div>

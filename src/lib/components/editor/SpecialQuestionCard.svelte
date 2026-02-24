@@ -12,17 +12,17 @@
   } = $props();
 </script>
 
-<div
+<article
   class="card bg-base-200 shadow-sm border border-base-content/10 compact h-full"
 >
   <div class="card-body p-3 flex flex-col gap-2">
-    <div class="flex justify-between items-center">
+    <header class="flex justify-between items-center">
       <span
         class="badge {isFinal ? 'badge-warning' : 'badge-secondary'} text-xs"
       >
         {isFinal ? "ФИНАЛ" : `Кот #${(index ?? 0) + 1}`}
       </span>
-    </div>
+    </header>
 
     <div class="form-control w-full">
       <label class="label py-0" for="theme-{index}">
@@ -62,4 +62,4 @@
       />
     </div>
   </div>
-</div>
+</article>

@@ -3,7 +3,6 @@ import { test, expect } from "@playwright/test";
 test.describe("Setup tests", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/setup");
-    console.log(`Running ${test.info().title}`);
   });
 
   test("1. Setup test 1", async ({ page }) => {

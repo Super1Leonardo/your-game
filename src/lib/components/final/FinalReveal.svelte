@@ -36,13 +36,16 @@
   }
 </script>
 
-<div class="card bg-base-100 shadow-2xl w-full">
+<section
+  class="card bg-base-100 shadow-2xl w-full"
+  aria-label="Итоги финального раунда"
+>
   <div class="card-body text-center p-10">
     <h2 class="text-5xl font-extrabold mb-8">Итоги финала</h2>
 
-    <div class="flex flex-col gap-4 mb-8">
+    <ol class="flex flex-col gap-4 mb-8 list-none p-0">
       {#each finalPlayers as player, i}
-        <div
+        <li
           class="p-6 border-2 border-base-content/10 rounded-box flex justify-between items-center transition-all duration-500 {i >
           revealIndex
             ? 'opacity-30 scale-95'
@@ -65,11 +68,11 @@
               </span>
             </div>
           {/if}
-        </div>
+        </li>
       {/each}
-    </div>
+    </ol>
 
-    <div class="h-32 flex items-center justify-center">
+    <div class="h-32 flex items-center justify-center" aria-live="polite">
       {#if correctRevealed}
         <div
           class="w-full bg-success/20 text-success-content p-6 rounded-box border-2 border-success animate-in fade-in zoom-in duration-500"
@@ -107,4 +110,4 @@
       {/if}
     </div>
   </div>
-</div>
+</section>

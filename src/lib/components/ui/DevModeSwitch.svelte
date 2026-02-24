@@ -2,12 +2,12 @@
   import { devMode } from "$lib/state/devStore.svelte";
 </script>
 
-<div class="flex gap-3">
-  <p class="text-secondary">Режим разработчика</p>
+<label class="flex gap-3">
+  <span class="text-secondary">Режим разработчика</span>
   <input
     type="checkbox"
     data-test-id="dev-mode-switch"
     class="toggle toggle-secondary"
     bind:checked={devMode.enabled}
   />
-</div>
+</label>

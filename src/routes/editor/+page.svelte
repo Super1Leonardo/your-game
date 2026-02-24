@@ -37,7 +37,7 @@
 
 <div class="min-h-screen bg-base-200 flex flex-col items-center p-4">
   <div class="w-full max-w-7xl">
-    <div
+    <nav
       class="navbar bg-base-100 rounded-box shadow-lg mb-6 sticky top-2 z-50 border border-base-content/5"
     >
       <div class="navbar-start">
@@ -71,7 +71,7 @@
           Сохранить
         </button>
       </div>
-    </div>
+    </nav>
 
     <div role="tablist" class="tabs tabs-lifted tabs-lg mb-4">
       <button
@@ -100,7 +100,7 @@
       >
     </div>
 
-    <div
+    <main
       class="bg-base-100 rounded-box rounded-tl-none p-6 shadow-xl min-h-[50vh] grid items-start overflow-x-hidden"
     >
       {#key activeTab}
@@ -121,6 +121,6 @@
           {/if}
         </div>
       {/key}
-    </div>
+    </main>
   </div>
 </div>

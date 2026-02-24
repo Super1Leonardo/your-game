@@ -34,8 +34,8 @@
   }
 </script>
 
-<div
-  class="min-h-screen bg-base-200 flex flex-col items-center pt-4 px-4 gap-7"
+<main
+  class="min-h-screen bg-base-200 flex flex-col items-center pt-4 px-4 gap-4"
 >
   <Header />
 
@@ -55,4 +55,4 @@
       <Board {themes} />
     </div>
   {/if}
-</div>
+</main>

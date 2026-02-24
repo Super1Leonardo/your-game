@@ -113,31 +113,26 @@
   }
 </script>
 
-<div
-  class="min-h-screen bg-base-200 flex flex-col items-center justify-center py-8 px-4"
->
+<main class="min-h-screen bg-base-200 flex flex-col items-center justify-center py-8 px-4">
   <Header />
   <div class="grow w-full grid place-items-center">
     {#if isCat && !isSpecialSetupDone}
       <div
         class="col-start-1 row-start-1 w-full flex justify-center"
-        out:fly={{ y: -30, duration: 300 }}
-      >
+        out:fly={{ y: -30, duration: 300 }}>
         <Cat onSetupComplete={() => (isSpecialSetupDone = true)} />
       </div>
     {:else if isAuction && !isSpecialSetupDone}
       <div
         class="col-start-1 row-start-1 w-full flex justify-center"
-        out:fly={{ y: -30, duration: 300 }}
-      >
+        out:fly={{ y: -30, duration: 300 }}>
         <Auction onSetupComplete={() => (isSpecialSetupDone = true)} />
       </div>
     {:else if game.activeQuestion}
       <div
         class="col-start-1 row-start-1 w-full flex justify-center"
         in:fly={{ y: 30, duration: 400, delay: 300 }}
-        out:fade={{ duration: 200 }}
-      >
+        out:fade={{ duration: 200 }}>
         <AvgQuestion
           bind:answerInput
           {submitAnswer}
@@ -149,4 +144,4 @@
       </div>
     {/if}
   </div>
-</div>
+</main>

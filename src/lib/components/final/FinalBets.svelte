@@ -34,7 +34,7 @@
   }
 </script>
 
-<div class="card bg-base-100 border-t-4 border-primary shadow-2xl w-full">
+<section class="card bg-base-100 border-t-4 border-primary shadow-2xl w-full">
   <div class="card-body items-center text-center p-10">
     <div class="badge badge-primary badge-lg mb-4">Финал</div>
     <h2 class="text-3xl font-bold mb-8 opacity-80">
@@ -89,4 +89,4 @@
       </div>
     {/if}
   </div>
-</div>
+</section>

@@ -6,16 +6,14 @@
   import { prepareRound } from "$lib/utils/boardGenerator";
   import type { RawSpecialQuestion } from "$lib/types";
   import ThemeSwitcher from "$lib/components/ui/ThemeSwitcher.svelte";
-
-  // Импорт новых компонентов
   import PlayerSetup from "$lib/components/setup/PlayerSetup.svelte";
   import GamePackManager from "$lib/components/setup/GamePackManager.svelte";
 
-  // Состояние игроков хранится здесь, но управляется внутри PlayerSetup
+  // состояние управляется внутри PlayerSetup
   let playersInput = $state<any[]>([]);
 
   function handleStartGame() {
-    // Валидация имен
+    // валидация
     for (const p of playersInput) {
       const trimmedName = p.name.trim();
       if (!trimmedName) {
@@ -71,7 +69,7 @@
   }
 </script>
 
-<div
+<main
   class="min-h-screen bg-base-200 flex transition-colors duration-300 items-center justify-center p-4"
 >
   <div class="absolute top-1 z-50 mt-4">
@@ -112,4 +110,4 @@
       </div>
     </div>
   </div>
-</div>
+</main>

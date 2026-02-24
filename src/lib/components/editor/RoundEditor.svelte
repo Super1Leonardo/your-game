@@ -7,7 +7,8 @@
 
 <div class="flex flex-col gap-6 pb-10">
   {#each themes as themeObj, i}
-    <div
+    <section
+      aria-label="Редактирование темы {i + 1}"
       class="collapse collapse-arrow bg-base-100 border border-base-300 shadow-sm"
     >
       <input type="checkbox" checked={true} />
@@ -34,6 +35,6 @@
           {/each}
         </div>
       </div>
-    </div>
+    </section>
   {/each}
 </div>

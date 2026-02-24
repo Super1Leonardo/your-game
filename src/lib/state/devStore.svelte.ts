@@ -1,3 +1,5 @@
+import { browser } from "$app/environment";
+
 const DEV_STORAGE_KEY = "dev-mode-state";
 
 export const devMode = $state({
@@ -19,7 +21,7 @@ export function loadDevMode() {
 }
 
 export function initDevStorePersistence() {
-  if (typeof window !== "undefined") {
+  if (browser) {
     $effect.root(() => {
       $effect(() => {
         localStorage.setItem(DEV_STORAGE_KEY, JSON.stringify(devMode)); // при любом изменении сохраняется

@@ -59,14 +59,11 @@
   }
 </script>
 
-<div
-  class="card bg-base-100 shadow-2xl border-t-4 border-secondary w-full overflow-x-hidden"
->
+<section class="card bg-base-100 shadow-2xl border-t-4 border-secondary w-full overflow-x-hidden">
   <div class="card-body items-center text-center p-10">
     <div
       class="grid w-full justify-items-center items-start transition-[height] duration-300 ease-in-out overflow-hidden"
-      style={currentContentHeight ? `height: ${currentContentHeight}px` : ""}
-    >
+      style={currentContentHeight ? `height: ${currentContentHeight}px` : ""}>
       {#if !isReady && currentPlayer}
         <div
           bind:clientHeight={readyHeight}
@@ -93,8 +90,7 @@
           bind:clientHeight={questionHeight}
           class="col-start-1 row-start-1 w-full max-w-2xl flex flex-col items-center"
           in:fade={{ duration: 200, delay: 400 }}
-          out:fade={{ duration: 200 }}
-        >
+          out:fade={{ duration: 200 }}>
           <Timer time={60} onTimeUp={handleTimeUp} />
 
           <h2 class="text-4xl font-extrabold my-8 leading-tight">
@@ -105,22 +101,16 @@
             style="grid-template-rows: {devMode.enabled
               ? '1fr'
               : '0fr'}; opacity: {devMode.enabled ? '1' : '0'};"
-            inert={!devMode.enabled}
-          >
+            inert={!devMode.enabled}>
             <div class="overflow-hidden w-full">
               <div class="flex justify-center items-stretch gap-3 pb-6 w-full">
-                <div
-                  class="px-4 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg"
-                >
-                  <span
-                    >Ответ: <strong>{game.finalQuestion?.answer}</strong></span
-                  >
+                <div class="px-4 flex items-center py-2 justify-center bg-info text-info-content rounded-2xl shadow-sm text-lg">
+                  <span>Ответ: <strong>{game.finalQuestion?.answer}</strong></span>
                 </div>
                 {#if game.timerEndsAt}
                   <button
                     class="btn btn-warning w-1/5 text-lg h-auto"
-                    onclick={pauseTimer}
-                  >
+                    onclick={pauseTimer}>
                     Пауза
                   </button>
                 {:else if game.pausedRemainingMs !== null}
@@ -145,12 +135,11 @@
           <button
             data-test-id="final-answer-submit"
             class="btn btn-success btn-lg w-1/2"
-            onclick={submitAnswer}
-          >
+            onclick={submitAnswer}>
             Сохранить ответ
           </button>
         </div>
       {/if}
     </div>
   </div>
-</div>
+</section>

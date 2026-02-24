@@ -41,7 +41,7 @@
 >
   <Header />
 
-  <div class="grow w-full max-w-4xl grid place-items-center">
+  <main class="grow w-full max-w-4xl grid place-items-center">
     {#if step === "betting"}
       <div
         class="col-start-1 row-start-1 w-full"
@@ -67,5 +67,5 @@
         <FinalReveal {finalPlayers} />
       </div>
     {/if}
-  </div>
+  </main>
 </div>

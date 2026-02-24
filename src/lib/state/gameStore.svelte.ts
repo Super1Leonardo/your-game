@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import type { GameState } from "$lib/types";
 
 const STORAGE_KEY = "igra-state";
@@ -39,7 +40,7 @@ export function loadGame() {
 
 // aвтоматическое сохранение состояния при любом изменении
 export function initStorePersistence() {
-  if (typeof window !== "undefined") {
+  if (browser) {
     $effect.root(() => {
       $effect(() => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(game));

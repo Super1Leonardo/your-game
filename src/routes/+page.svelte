@@ -26,7 +26,7 @@
   }
 </script>
 
-<div class="hero bg-base-200 min-h-screen">
+<main class="hero bg-base-200 min-h-screen">
   <div class="absolute top-1 z-50 mt-8">
     <ThemeSwitcher />
   </div>
@@ -58,7 +58,7 @@
       </div>
     </div>
   </div>
-</div>
+</main>
 
 <style>
   @reference "./layout.css";
