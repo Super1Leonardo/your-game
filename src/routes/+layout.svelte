@@ -15,6 +15,7 @@
   import Toaster from "$lib/components/ui/Toaster.svelte";
   import { fly } from "svelte/transition";
   import { page } from "$app/stores";
+  import { loadProfiles } from "$lib/state/profileStore.svelte";
 
   let { children } = $props();
   let isInitialized = $state(false);
@@ -23,6 +24,7 @@
     loadGame();
     initStorePersistence();
     loadDevMode();
+    loadProfiles();
     initDevStorePersistence();
     isInitialized = true;
   });

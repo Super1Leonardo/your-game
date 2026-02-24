@@ -1,10 +1,9 @@
 <script lang="ts">
   import { game } from "$lib/state/gameStore.svelte";
-  import { devMode } from "$lib/state/devStore.svelte";
   import DevModeButtons from "./DevModeButtons.svelte";
   import GameDialog from "./GameDialog.svelte";
   import type { Player } from "$lib/types";
-  import { fade, fly } from "svelte/transition";
+  import { fly } from "svelte/transition";
 
   let {
     highestBetterId,

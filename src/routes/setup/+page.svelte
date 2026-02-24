@@ -8,6 +8,7 @@
   import ThemeSwitcher from "$lib/components/ui/ThemeSwitcher.svelte";
   import PlayerSetup from "$lib/components/setup/PlayerSetup.svelte";
   import GamePackManager from "$lib/components/setup/GamePackManager.svelte";
+  import { saveProfile } from "$lib/state/profileStore.svelte";
 
   // состояние управляется внутри PlayerSetup
   let playersInput = $state<any[]>([]);
@@ -37,6 +38,10 @@
         return;
       }
     }
+
+    playersInput.forEach((p) => {
+      saveProfile({ name: p.name, avatar: p.avatar });
+    });
 
     game.players = playersInput.map((p) => ({
       // сохранение игроков
