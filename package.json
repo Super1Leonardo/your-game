@@ -11,8 +11,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test:e2e": "playwright test",
-		"test": "npm run test:e2e",
-		"ci": "npm install"
+		"test": "npm run test:e2e"
 	},
 	"devDependencies": {
 		"@melt-ui/pp": "^0.3.2",
