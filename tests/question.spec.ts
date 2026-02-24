@@ -48,7 +48,6 @@ test.describe("Question tests", () => {
     await page.getByTestId("question-input").fill("AAAAAAAA");
     await page.getByTestId("question-submit").click();
     await page.keyboard.press(" ");
-    await page.pause();
     await expect(page.getByText("Отвечает Игрок 2")).toBeVisible();
     await page.getByTestId("question-input").fill("HTML");
     await page.getByTestId("question-submit").click();
