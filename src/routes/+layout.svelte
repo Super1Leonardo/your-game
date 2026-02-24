@@ -13,7 +13,7 @@
   } from "$lib/state/devStore.svelte";
   import { onMount } from "svelte";
   import Toaster from "$lib/components/ui/Toaster.svelte";
-  import { fly } from "svelte/transition"; // Используем fly вместо fade
+  import { fly } from "svelte/transition";
   import { page } from "$app/stores";
 
   let { children } = $props();

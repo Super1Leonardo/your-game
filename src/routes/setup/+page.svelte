@@ -97,7 +97,7 @@
 
       <div class="w-full mb-2">
         <a href="/editor" class="btn btn-outline btn-secondary w-full">
-          ✏️ Редактор вопросов
+          Редактор вопросов
         </a>
       </div>
 

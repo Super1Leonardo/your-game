@@ -3,11 +3,6 @@
   import QuestionCard from "./QuestionCard.svelte";
 
   let { themes = $bindable() }: { themes: RawTheme[] } = $props();
-
-  function addTheme() {
-    // Хелпер для добавления новой темы (если понадобится расширение)
-    // Пока не используется, так как у нас фиксировано 6 тем
-  }
 </script>
 
 <div class="flex flex-col gap-6 pb-10">

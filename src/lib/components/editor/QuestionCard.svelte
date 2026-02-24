@@ -13,7 +13,7 @@
       <span class="badge badge-neutral text-xs">#{index + 1}</span>
       <input
         type="number"
-        class="input input-xs bg-primary w-12 text-white text-center font-mono"
+        class="input input-xs w-12 text-secondary text-center font-mono"
         bind:value={question.cost}
         aria-label="Стоимость"
       />
